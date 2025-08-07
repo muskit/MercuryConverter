@@ -1,0 +1,30 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:MercuryConverter"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+
+        x:Class="MercuryConverter.MainWindow"
+        Title="MercuryConverter"
+        Width="1024" Height="800"
+        ExtendClientAreaToDecorationsHint="True"
+>
+    <StackPanel>
+        <DockPanel LastChildFill="False">
+            <Menu Name="MenuBar" DockPanel.Dock="Left">
+                <MenuItem Header="File">
+                    <MenuItem Header="Open Data Folder..." />
+                </MenuItem>
+            </Menu>
+        </DockPanel>
+        <TabControl>
+            <TabItem Header="selection">
+                <UserControl Name="SelectionControl"/>
+            </TabItem>
+            <TabItem Header="export">
+                
+            </TabItem>
+        </TabControl>
+    </StackPanel>
+</Window>

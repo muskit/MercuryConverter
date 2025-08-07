@@ -1,0 +1,31 @@
+<Panel xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:MercuryConverter.Views"
+        x:Class="MercuryConverter.Views.Selection"
+>
+    <DockPanel>
+        <ContentControl Name="SelectionInfo" DockPanel.Dock="Right" Width="250">
+            <Label Content="SelectionInfo"/>
+        </ContentControl>
+        <StackPanel>
+            <Expander HorizontalAlignment="Stretch" BorderThickness="0">
+                <Expander.Header>
+                    Search/Filter
+                </Expander.Header>
+                <StackPanel Name="Filter">
+                    <TextBox />
+                </StackPanel>
+            </Expander>
+            <DataGrid Name="ListingTable">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="ID"/>
+                    <DataGridTextColumn Header="Title"/>
+                    <DataGridTextColumn Header="Artist"/>
+                    <DataGridTextColumn Header="Source"/>
+                </DataGrid.Columns>
+            </DataGrid>
+        </StackPanel>
+    </DockPanel>
+</Panel>
