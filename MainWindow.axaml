@@ -22,6 +22,7 @@
         </StackPanel>
 
         <DockPanel>
+            
             <Menu Name="MenuBar" DockPanel.Dock="Top">
                 <MenuItem Header="File">
                     <MenuItem Header="Open Data Folder..." />
@@ -32,6 +33,7 @@
                 <TabItem Header="selection">
                     <UserControl Name="SelectionControl"/>
                 </TabItem>
+
                 <TabItem Header="export">
                 </TabItem>
             </TabControl>

@@ -6,21 +6,39 @@
         x:Class="MercuryConverter.Views.Selection"
 >
     <DockPanel>
-        <ContentControl Name="SelectionInfo" DockPanel.Dock="Right" Width="250">
-            <StackPanel Margin="12">
-                <Image Name="InfoImageJacket" Margin="24 0 24 0" Source="/Assets/imgs/jacket-placeholder.png"/>
-                <TextBlock Name="InfoNameText" Text="Name" FontWeight="Bold" HorizontalAlignment="Center" Margin="0 10 0 0"/>
-                <TextBlock Name="InfoArtistText" Text="Artist" HorizontalAlignment="Center"/>
-                <TextBlock Name="InfoSourceText" Text="Source" HorizontalAlignment="Center"/>
-                <UserControl Margin="0 24 0 0">
-                    
-                </UserControl>
-            </StackPanel>
-        </ContentControl>
-        <DockPanel Margin="0 0 8 0">
+        <!-- Sidebar -->
+        <TabControl Margin="8 8 0 0" Width="250" DockPanel.Dock="Right">
+            <TabControl.Resources>
+                <ResourceDictionary>
+                    <Thickness x:Key="TabItemHeaderMargin">12 0 12 15</Thickness>
+                    <Thickness x:Key="TabItemMargin">0 0 0 0</Thickness>
+                </ResourceDictionary>
+            </TabControl.Resources>
+
+            <TabItem Header="Info" FontSize="16">
+                <StackPanel Name="SelectionInfo">
+                    <Image Name="InfoImageJacket" Margin="24 0 24 0" Source="/Assets/imgs/jacket-placeholder.png"/>
+                    <TextBlock Name="InfoNameText" Text="Name" FontWeight="Bold" HorizontalAlignment="Center" Margin="0 10 0 0"/>
+                    <TextBlock Name="InfoArtistText" Text="Artist" HorizontalAlignment="Center"/>
+                    <TextBlock Name="InfoSourceText" Text="Source" HorizontalAlignment="Center"/>
+                </StackPanel>
+            </TabItem>
+            <TabItem Header="Filters" FontSize="16">
+                <StackPanel>
+                    <!-- Sources Filter -->
+                    <TextBlock Text="Sources" FontWeight="Bold" Margin="0 0 0 4"/>
+                    <StackPanel Margin="10 0 0 0" Name="FilterSourceContainer"/>
+                    <!-- Categories Filter -->
+                    <TextBlock Text="Categories" FontWeight="Bold" Margin="0 20 0 4"/>
+                    <StackPanel Margin="10 0 0 0" Name="FilterCategoryContainer"/>
+                </StackPanel>
+            </TabItem>
+        </TabControl>
+        <!-- Song Listing Table -->
+        <DockPanel>
             <DockPanel Margin="0 4 0 8" DockPanel.Dock="Top">
-                <ComboBox DockPanel.Dock="Right" Width="160" PlaceholderText="Source filter" Name="SourceFilter"/>
-                <TextBox Margin="0 0 8 0" Watermark="Search for title, artist, designer..."/>
+                <!-- <ComboBox DockPanel.Dock="Right" Width="160" PlaceholderText="Source filter" Name="SourceFilter"/> -->
+                <TextBox Watermark="Search for title, artist, designer..."/>
             </DockPanel>
             <UserControl Background="{DynamicResource DataGridContentBackground}">
                 <DataGrid Name="ListingTable" IsReadOnly="True" SelectionMode="Extended" ItemsSource="{Binding SongCollection}">
