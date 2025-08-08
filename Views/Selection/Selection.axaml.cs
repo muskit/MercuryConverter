@@ -1,15 +1,38 @@
 using System;
+using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using Avalonia.Controls;
+using MercuryConverter.Data;
 
 namespace MercuryConverter.Views;
 
 public partial class Selection : Panel
 {
+    public static ObservableCollection<Song> SongCollection { get; } = new();
     public Selection()
     {
         InitializeComponent();
-        Database.Songs.CollectionChanged += OnSongsChg;
+        ListingTable.SelectionMode = DataGridSelectionMode.Extended;
+        SourceFilter.ItemsSource = new string[]{
+            "",
+            Consts.NUM_SOURCE[1],
+            Consts.NUM_SOURCE[2],
+            Consts.NUM_SOURCE[3],
+            Consts.NUM_SOURCE[4],
+            Consts.NUM_SOURCE[5],
+        };
+        
+        SongCollection.CollectionChanged += OnSongsChg;
+        DataContext = this;
+
+        // test data
+        SongCollection.Add(
+            new Song { Id = "S00-000", Name = "A Name", Artist = "An Artist", Source = Consts.NUM_SOURCE[2] }
+        );
+        SongCollection.Add(
+            new Song { Id = "S00-000", Name = "A Name", Artist = "An Artist", Source = Consts.NUM_SOURCE[3] }
+        );
+
     }
 
     private void OnSongsChg(object? sender, NotifyCollectionChangedEventArgs e)
@@ -19,17 +42,17 @@ public partial class Selection : Panel
         if (e.NewItems != null)
         {
             Console.WriteLine("Added...");
-            foreach (Data.Song added in e.NewItems)
+            foreach (Song added in e.NewItems)
             {
-                Console.WriteLine($"[{added.id}] {added.artist} - {added.name}");
+                Console.WriteLine($"[{added.Id}] {added.Artist} - {added.Name}");
             }
         }
         if (e.OldItems != null)
         {
             Console.WriteLine("Removed...");
-            foreach (Data.Song rem in e.OldItems)
+            foreach (Song rem in e.OldItems)
             {
-                Console.WriteLine($"[{rem.id}] {rem.artist} - {rem.name}");
+                Console.WriteLine($"[{rem.Id}] {rem.Artist} - {rem.Name}");
             }
         } 
     }

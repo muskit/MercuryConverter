@@ -9,15 +9,14 @@ public class Song
     /// <summary>
     /// Format: `Snn-nnn` where `n` is a digit.
     /// </summary>
-    public required string id;
-    public required string name;
-    public required string rubi;
-    public required string artist;
-    public required string copyright;
-    public required string tempo;
-    public required string version;
-    public required int genreId;
-    public required string game;
-    public required string jacket;
+    public required string Id { get; set;}
+    public required string Name { get; set; }
+    public required string Artist { get; set; }
+    public required string Source { get; set; }
+    public string rubi;
+    public string copyright;
+    public string tempo;
+    public int genreId;
+    public string jacket;
     public Chart?[] charts = { null, null, null, null };
 }

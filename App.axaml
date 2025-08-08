@@ -1,11 +1,41 @@
 <Application xmlns="https://github.com/avaloniaui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             x:Class="MercuryConverter.App"
-             RequestedThemeVariant="Default">
-             <!-- "Default" ThemeVariant follows system theme variant. "Dark" or "Light" are other available options. -->
+            xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+            x:Class="MercuryConverter.App"
+            RequestedThemeVariant="Default">
+            <!-- "Default" ThemeVariant follows system theme variant. "Dark" or "Light" are other available options. -->
 
     <Application.Styles>
-        <FluentTheme />
+        <!-- <FluentTheme /> -->
+        <FluentTheme>
+            <FluentTheme.Palettes>
+                <ColorPaletteResources x:Key="Light" Accent="#ffb85add" AltHigh="White" AltLow="White" AltMedium="White" AltMediumHigh="White" AltMediumLow="White" BaseHigh="Black" BaseLow="#ffa1aeff" BaseMedium="#ff5a71c0" BaseMediumHigh="#ff2b4996" BaseMediumLow="#ff435dab" ChromeAltLow="#ff2b4996" ChromeBlackHigh="Black" ChromeBlackLow="#ffa1aeff" ChromeBlackMedium="#ff2b4996" ChromeBlackMediumLow="#ff5a71c0" ChromeDisabledHigh="#ffa1aeff" ChromeDisabledLow="#ff5a71c0" ChromeGray="#ff435dab" ChromeHigh="#ffa1aeff" ChromeLow="#ffd9e1ff" ChromeMedium="#ffced7ff" ChromeMediumLow="#ffd9e1ff" ChromeWhite="White" ListLow="#ffced7ff" ListMedium="#ffa1aeff" RegionColor="#ffccdbff" />
+                <ColorPaletteResources x:Key="Dark" Accent="#ff9b21dd" AltHigh="Black" AltLow="Black" AltMedium="Black" AltMediumHigh="Black" AltMediumLow="Black" BaseHigh="White" BaseLow="#994736b0" BaseMedium="#eba49be0" BaseMediumHigh="#ffbbb4ec" BaseMediumLow="#c27568c8" ChromeAltLow="#ffbbb4ec" ChromeBlackHigh="Black" ChromeBlackLow="#ffbbb4ec" ChromeBlackMedium="Black" ChromeBlackMediumLow="Black" ChromeDisabledHigh="#994736b0" ChromeDisabledLow="#eba49be0" ChromeGray="#d68d82d4" ChromeHigh="#d68d82d4" ChromeLow="#eb101272" ChromeMedium="#d61e1b82" ChromeMediumLow="#ad392da1" ChromeWhite="White" ListLow="#d61e1b82" ListMedium="#994736b0" RegionColor="#ff1c1f46" />
+            </FluentTheme.Palettes>
+            <Style Selector="DataGrid:focus DataGridCell:current /template/ Grid#FocusVisual"> 
+                <Setter Property="IsVisible" Value="False" /> 
+            </Style> 
+        </FluentTheme>
+
         <StyleInclude Source="avares://Avalonia.Controls.DataGrid/Themes/Fluent.xaml"/>
     </Application.Styles>
+
+    <Application.Resources>
+        <ResourceDictionary>
+            <!-- Theming -->
+            <ResourceDictionary.ThemeDictionaries>
+                <ResourceDictionary x:Key="Light">
+                    <SolidColorBrush x:Key="ExpanderHeaderBackgroundPointerOver">#40FFFFFF</SolidColorBrush>
+                    <SolidColorBrush x:Key="DataGridContentBackground">#40FFFFFF</SolidColorBrush>
+                </ResourceDictionary>
+                <ResourceDictionary x:Key="Dark">
+                    <SolidColorBrush x:Key="ExpanderHeaderBackgroundPointerOver">#20000000</SolidColorBrush>
+                    <SolidColorBrush x:Key="DataGridContentBackground">#20000000</SolidColorBrush>
+                </ResourceDictionary>
+            </ResourceDictionary.ThemeDictionaries>
+            <!-- Component Override -->
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceInclude Source="Overrides/Expander.axaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Application.Resources>
 </Application>

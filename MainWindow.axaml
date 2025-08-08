@@ -8,23 +8,24 @@
         x:Class="MercuryConverter.MainWindow"
         Title="MercuryConverter"
         Width="1024" Height="800"
+        MinWidth="800" MinHeight="600"
         ExtendClientAreaToDecorationsHint="True"
 >
-    <StackPanel>
-        <DockPanel LastChildFill="False">
-            <Menu Name="MenuBar" DockPanel.Dock="Left">
-                <MenuItem Header="File">
-                    <MenuItem Header="Open Data Folder..." />
-                </MenuItem>
-            </Menu>
-        </DockPanel>
+    <!-- Components -->
+    <DockPanel>
+        <Menu Name="MenuBar" DockPanel.Dock="Top">
+            <MenuItem Header="File">
+                <MenuItem Header="Open Data Folder..." />
+            </MenuItem>
+        </Menu>
+
         <TabControl>
             <TabItem Header="selection">
                 <UserControl Name="SelectionControl"/>
             </TabItem>
             <TabItem Header="export">
-                
             </TabItem>
         </TabControl>
-    </StackPanel>
+
+    </DockPanel>
 </Window>

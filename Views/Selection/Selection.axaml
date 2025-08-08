@@ -7,25 +7,25 @@
 >
     <DockPanel>
         <ContentControl Name="SelectionInfo" DockPanel.Dock="Right" Width="250">
-            <Label Content="SelectionInfo"/>
+            <StackPanel Margin="12">
+                <Image Source="/Assets/jacket-placeholder.png"/>
+            </StackPanel>
         </ContentControl>
-        <StackPanel>
-            <Expander HorizontalAlignment="Stretch" BorderThickness="0">
-                <Expander.Header>
-                    Search/Filter
-                </Expander.Header>
-                <StackPanel Name="Filter">
-                    <TextBox />
-                </StackPanel>
-            </Expander>
-            <DataGrid Name="ListingTable">
-                <DataGrid.Columns>
-                    <DataGridTextColumn Header="ID"/>
-                    <DataGridTextColumn Header="Title"/>
-                    <DataGridTextColumn Header="Artist"/>
-                    <DataGridTextColumn Header="Source"/>
-                </DataGrid.Columns>
-            </DataGrid>
-        </StackPanel>
+        <DockPanel Margin="0 0 8 0">
+            <DockPanel Margin="0 0 0 8" DockPanel.Dock="Top">
+                <ComboBox DockPanel.Dock="Right" Width="160" PlaceholderText="Source filter" Name="SourceFilter"/>
+                <TextBox Margin="0 0 8 0" Watermark="Search for title, artist, charter..."/>
+            </DockPanel>
+            <UserControl Background="{DynamicResource DataGridContentBackground}">
+                <DataGrid Name="ListingTable" IsReadOnly="True" SelectionMode="Extended" ItemsSource="{Binding SongCollection}">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="ID" Width="90" Binding="{Binding Id}"/>
+                        <DataGridTextColumn Header="Title" Width="*" Binding="{Binding Name}"/>
+                        <DataGridTextColumn Header="Artist" Width="*" Binding="{Binding Artist}"/>
+                        <DataGridTextColumn Header="Source" Width="150" Binding="{Binding Source}"/>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </UserControl>
+        </DockPanel>
     </DockPanel>
 </Panel>
