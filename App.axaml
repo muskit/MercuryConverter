@@ -1,15 +1,13 @@
 <Application xmlns="https://github.com/avaloniaui"
             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
             x:Class="MercuryConverter.App"
-            RequestedThemeVariant="Default">
-            <!-- "Default" ThemeVariant follows system theme variant. "Dark" or "Light" are other available options. -->
+            RequestedThemeVariant="Default"> <!-- Dark Default Light -->
 
     <Application.Styles>
-        <!-- <FluentTheme /> -->
         <FluentTheme>
             <FluentTheme.Palettes>
-                <ColorPaletteResources x:Key="Light" Accent="#ffb85add" AltHigh="White" AltLow="White" AltMedium="White" AltMediumHigh="White" AltMediumLow="White" BaseHigh="Black" BaseLow="#ffa1aeff" BaseMedium="#ff5a71c0" BaseMediumHigh="#ff2b4996" BaseMediumLow="#ff435dab" ChromeAltLow="#ff2b4996" ChromeBlackHigh="Black" ChromeBlackLow="#ffa1aeff" ChromeBlackMedium="#ff2b4996" ChromeBlackMediumLow="#ff5a71c0" ChromeDisabledHigh="#ffa1aeff" ChromeDisabledLow="#ff5a71c0" ChromeGray="#ff435dab" ChromeHigh="#ffa1aeff" ChromeLow="#ffd9e1ff" ChromeMedium="#ffced7ff" ChromeMediumLow="#ffd9e1ff" ChromeWhite="White" ListLow="#ffced7ff" ListMedium="#ffa1aeff" RegionColor="#ffccdbff" />
-                <ColorPaletteResources x:Key="Dark" Accent="#ff9b21dd" AltHigh="Black" AltLow="Black" AltMedium="Black" AltMediumHigh="Black" AltMediumLow="Black" BaseHigh="White" BaseLow="#994736b0" BaseMedium="#eba49be0" BaseMediumHigh="#ffbbb4ec" BaseMediumLow="#c27568c8" ChromeAltLow="#ffbbb4ec" ChromeBlackHigh="Black" ChromeBlackLow="#ffbbb4ec" ChromeBlackMedium="Black" ChromeBlackMediumLow="Black" ChromeDisabledHigh="#994736b0" ChromeDisabledLow="#eba49be0" ChromeGray="#d68d82d4" ChromeHigh="#d68d82d4" ChromeLow="#eb101272" ChromeMedium="#d61e1b82" ChromeMediumLow="#ad392da1" ChromeWhite="White" ListLow="#d61e1b82" ListMedium="#994736b0" RegionColor="#ff1c1f46" />
+                <ColorPaletteResources x:Key="Light" Accent="#ffb459c0" AltHigh="White" AltLow="White" AltMedium="White" AltMediumHigh="White" AltMediumLow="White" BaseHigh="Black" BaseLow="#ffa1aeff" BaseMedium="#ff5a71c0" BaseMediumHigh="#ff2b4996" BaseMediumLow="#ff435dab" ChromeAltLow="#ff2b4996" ChromeBlackHigh="Black" ChromeBlackLow="#ffa1aeff" ChromeBlackMedium="#ff2b4996" ChromeBlackMediumLow="#ff5a71c0" ChromeDisabledHigh="#ffa1aeff" ChromeDisabledLow="#ff5a71c0" ChromeGray="#ff435dab" ChromeHigh="#ffa1aeff" ChromeLow="#ffd9e1ff" ChromeMedium="#ffced7ff" ChromeMediumLow="#ffd9e1ff" ChromeWhite="White" ListLow="#ffced7ff" ListMedium="#ffa1aeff" RegionColor="#ffccdbff" />
+                <ColorPaletteResources x:Key="Dark" Accent="#ff9b21dd" AltHigh="Black" AltLow="Black" AltMedium="Black" AltMediumHigh="Black" AltMediumLow="Black" BaseHigh="White" BaseLow="#ff3c2d94" BaseMedium="#ff9e96d2" BaseMediumHigh="#ffb7b0e1" BaseMediumLow="#ff6d61b3" ChromeAltLow="#ffb7b0e1" ChromeBlackHigh="Black" ChromeBlackLow="#ffb7b0e1" ChromeBlackMedium="Black" ChromeBlackMediumLow="Black" ChromeDisabledHigh="#ff3c2d94" ChromeDisabledLow="#ff9e96d2" ChromeGray="#ff867cc2" ChromeHigh="#ff867cc2" ChromeLow="#ff0c0f5e" ChromeMedium="#ff18166c" ChromeMediumLow="#ff302587" ChromeWhite="White" ListLow="#ff18166c" ListMedium="#ff3c2d94" RegionColor="#ff1c1f46" />
             </FluentTheme.Palettes>
             <Style Selector="DataGrid:focus DataGridCell:current /template/ Grid#FocusVisual"> 
                 <Setter Property="IsVisible" Value="False" /> 
@@ -26,13 +24,17 @@
                 <ResourceDictionary x:Key="Light">
                     <SolidColorBrush x:Key="ExpanderHeaderBackgroundPointerOver">#40FFFFFF</SolidColorBrush>
                     <SolidColorBrush x:Key="DataGridContentBackground">#40FFFFFF</SolidColorBrush>
+                    <Bitmap x:Key="BannerBitmap">/Assets/imgs/banner_light.png</Bitmap>
                 </ResourceDictionary>
                 <ResourceDictionary x:Key="Dark">
                     <SolidColorBrush x:Key="ExpanderHeaderBackgroundPointerOver">#20000000</SolidColorBrush>
                     <SolidColorBrush x:Key="DataGridContentBackground">#20000000</SolidColorBrush>
+                    <Bitmap x:Key="BannerBitmap">/Assets/imgs/banner_dark.png</Bitmap>
                 </ResourceDictionary>
             </ResourceDictionary.ThemeDictionaries>
-            <!-- Component Override -->
+            <!-- Control Property Override -->
+            <Thickness x:Key="TabItemMargin">12</Thickness>
+            <!-- Control Override -->
             <ResourceDictionary.MergedDictionaries>
                 <ResourceInclude Source="Overrides/Expander.axaml"/>
             </ResourceDictionary.MergedDictionaries>

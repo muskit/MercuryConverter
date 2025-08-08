@@ -26,13 +26,15 @@ public partial class Selection : Panel
         DataContext = this;
 
         // test data
-        SongCollection.Add(
-            new Song { Id = "S00-000", Name = "A Name", Artist = "An Artist", Source = Consts.NUM_SOURCE[2] }
-        );
-        SongCollection.Add(
-            new Song { Id = "S00-000", Name = "A Name", Artist = "An Artist", Source = Consts.NUM_SOURCE[3] }
-        );
-
+        if (SongCollection.Count == 0)
+        {
+            SongCollection.Add(
+                new Song { Id = "S00-000", Name = "A Name", Artist = "An Artist", Source = Consts.NUM_SOURCE[2] }
+            );
+            SongCollection.Add(
+                new Song { Id = "S00-001", Name = "A Name", Artist = "An Artist", Source = Consts.NUM_SOURCE[3] }
+            );
+        }
     }
 
     private void OnSongsChg(object? sender, NotifyCollectionChangedEventArgs e)

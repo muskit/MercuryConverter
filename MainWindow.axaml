@@ -12,20 +12,29 @@
         ExtendClientAreaToDecorationsHint="True"
 >
     <!-- Components -->
-    <DockPanel>
-        <Menu Name="MenuBar" DockPanel.Dock="Top">
-            <MenuItem Header="File">
-                <MenuItem Header="Open Data Folder..." />
-            </MenuItem>
-        </Menu>
+    <Panel>
+        <!-- Banner -->
+        <StackPanel>
+            <UserControl Background="{DynamicResource SystemAltHighColor}" Height="86"/>
+        </StackPanel>
+        <StackPanel HorizontalAlignment="Right">
+            <Image Height="86" Source="{DynamicResource BannerBitmap}"/>
+        </StackPanel>
 
-        <TabControl>
-            <TabItem Header="selection">
-                <UserControl Name="SelectionControl"/>
-            </TabItem>
-            <TabItem Header="export">
-            </TabItem>
-        </TabControl>
+        <DockPanel>
+            <Menu Name="MenuBar" DockPanel.Dock="Top">
+                <MenuItem Header="File">
+                    <MenuItem Header="Open Data Folder..." />
+                </MenuItem>
+            </Menu>
 
-    </DockPanel>
+            <TabControl>
+                <TabItem Header="selection">
+                    <UserControl Name="SelectionControl"/>
+                </TabItem>
+                <TabItem Header="export">
+                </TabItem>
+            </TabControl>
+        </DockPanel>
+    </Panel>
 </Window>

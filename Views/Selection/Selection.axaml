@@ -8,13 +8,19 @@
     <DockPanel>
         <ContentControl Name="SelectionInfo" DockPanel.Dock="Right" Width="250">
             <StackPanel Margin="12">
-                <Image Source="/Assets/jacket-placeholder.png"/>
+                <Image Name="InfoImageJacket" Margin="24 0 24 0" Source="/Assets/imgs/jacket-placeholder.png"/>
+                <TextBlock Name="InfoNameText" Text="Name" FontWeight="Bold" HorizontalAlignment="Center" Margin="0 10 0 0"/>
+                <TextBlock Name="InfoArtistText" Text="Artist" HorizontalAlignment="Center"/>
+                <TextBlock Name="InfoSourceText" Text="Source" HorizontalAlignment="Center"/>
+                <UserControl Margin="0 24 0 0">
+                    
+                </UserControl>
             </StackPanel>
         </ContentControl>
         <DockPanel Margin="0 0 8 0">
-            <DockPanel Margin="0 0 0 8" DockPanel.Dock="Top">
+            <DockPanel Margin="0 4 0 8" DockPanel.Dock="Top">
                 <ComboBox DockPanel.Dock="Right" Width="160" PlaceholderText="Source filter" Name="SourceFilter"/>
-                <TextBox Margin="0 0 8 0" Watermark="Search for title, artist, charter..."/>
+                <TextBox Margin="0 0 8 0" Watermark="Search for title, artist, designer..."/>
             </DockPanel>
             <UserControl Background="{DynamicResource DataGridContentBackground}">
                 <DataGrid Name="ListingTable" IsReadOnly="True" SelectionMode="Extended" ItemsSource="{Binding SongCollection}">
