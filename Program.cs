@@ -1,7 +1,9 @@
-﻿using Avalonia;
+﻿namespace MercuryConverter;
+
+using Avalonia;
 using System;
 
-namespace MercuryConverter;
+using MercuryConverter.UI;
 
 class Program
 {

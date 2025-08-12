@@ -1,6 +1,6 @@
 <Application xmlns="https://github.com/avaloniaui"
             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-            x:Class="MercuryConverter.App"
+            x:Class="MercuryConverter.UI.App"
             RequestedThemeVariant="Default"> <!-- Dark Default Light -->
 
     <Application.Styles>

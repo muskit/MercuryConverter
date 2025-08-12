@@ -2,8 +2,8 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:MercuryConverter.Views"
-        x:Class="MercuryConverter.Views.Selection"
+        xmlns:local="clr-namespace:MercuryConverter.UI.Views"
+        x:Class="MercuryConverter.UI.Views.Selection"
 >
     <DockPanel>
         <!-- Sidebar -->

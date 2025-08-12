@@ -1,9 +1,9 @@
 using Avalonia.Controls;
 using Avalonia.Styling;
 
-namespace MercuryConverter;
+namespace MercuryConverter.UI;
 
-using MercuryConverter.Views;
+using MercuryConverter.UI.Views;
 
 public partial class MainWindow : Window
 {

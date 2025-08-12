@@ -7,7 +7,7 @@ using Avalonia.Controls;
 using MercuryConverter.Data;
 using Avalonia;
 
-namespace MercuryConverter.Views;
+namespace MercuryConverter.UI.Views;
 
 public partial class Selection : Panel
 {
