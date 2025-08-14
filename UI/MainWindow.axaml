@@ -2,41 +2,48 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:dialogHost="clr-namespace:DialogHostAvalonia;assembly=DialogHost.Avalonia"
         xmlns:local="clr-namespace:MercuryConverter.UI"
-        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-
         x:Class="MercuryConverter.UI.MainWindow"
+
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         Title="MercuryConverter"
         Width="1024" Height="800"
         MinWidth="800" MinHeight="600"
         ExtendClientAreaToDecorationsHint="True"
 >
-    <!-- Components -->
-    <Panel>
-        <!-- Banner -->
-        <StackPanel>
-            <UserControl Background="{DynamicResource SystemAltHighColor}" Height="86"/>
-        </StackPanel>
-        <StackPanel HorizontalAlignment="Right">
-            <Image Height="86" Source="{DynamicResource BannerBitmap}"/>
-        </StackPanel>
+    <dialogHost:DialogHost CloseOnClickAway="False" Name="Dialog">
+        <dialogHost:DialogHost.DialogContent>
+            <Button Content="Test"/>
+        </dialogHost:DialogHost.DialogContent>
 
-        <DockPanel>
-            
-            <Menu Name="MenuBar" DockPanel.Dock="Top">
-                <MenuItem Header="File">
-                    <MenuItem Header="Open Data Folder..." />
-                </MenuItem>
-            </Menu>
+        <!-- Components -->
+        <Panel>
+            <!-- Banner -->
+            <StackPanel>
+                <UserControl Background="{DynamicResource SystemAltHighColor}" Height="86"/>
+            </StackPanel>
+            <StackPanel HorizontalAlignment="Right">
+                <Image Height="86" Source="{DynamicResource BannerBitmap}"/>
+            </StackPanel>
 
-            <TabControl>
-                <TabItem Header="selection">
-                    <UserControl Name="SelectionControl"/>
-                </TabItem>
+            <DockPanel>
+                
+                <Menu Name="MenuBar" DockPanel.Dock="Top">
+                    <MenuItem Header="File">
+                        <MenuItem Header="Open Data Folder..." />
+                    </MenuItem>
+                </Menu>
 
-                <TabItem Header="export">
-                </TabItem>
-            </TabControl>
-        </DockPanel>
-    </Panel>
+                <TabControl>
+                    <TabItem Header="selection">
+                        <UserControl Name="SelectionControl"/>
+                    </TabItem>
+
+                    <TabItem Header="export">
+                    </TabItem>
+                </TabControl>
+            </DockPanel>
+        </Panel>
+    </dialogHost:DialogHost>
 </Window>

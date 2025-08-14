@@ -1,6 +1,7 @@
 <Application xmlns="https://github.com/avaloniaui"
             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
             x:Class="MercuryConverter.UI.App"
+            xmlns:dialogHostAvalonia="clr-namespace:DialogHostAvalonia;assembly=DialogHost.Avalonia"
             RequestedThemeVariant="Default"> <!-- Dark Default Light -->
 
     <Application.Styles>
@@ -15,6 +16,8 @@
         </FluentTheme>
 
         <StyleInclude Source="avares://Avalonia.Controls.DataGrid/Themes/Fluent.xaml"/>
+        <dialogHostAvalonia:DialogHostStyles/>
+        <StyleInclude Source="avares://AvaloniaProgressRing/Styles/ProgressRing.xaml"/>
     </Application.Styles>
 
     <Application.Resources>
@@ -28,7 +31,8 @@
                 </ResourceDictionary>
                 <ResourceDictionary x:Key="Dark">
                     <SolidColorBrush x:Key="ExpanderHeaderBackgroundPointerOver">#20000000</SolidColorBrush>
-                    <SolidColorBrush x:Key="DataGridContentBackground">#20000000</SolidColorBrush>
+                    <SolidColorBrush x:Key="DataGridContentBackground">#ff000000</SolidColorBrush>
+                    <SolidColorBrush x:Key="DialogHostOverlayBackgroundMixinBrush">#222244</SolidColorBrush>
                     <Bitmap x:Key="BannerBitmap">/Assets/imgs/banner_dark.png</Bitmap>
                 </ResourceDictionary>
             </ResourceDictionary.ThemeDictionaries>

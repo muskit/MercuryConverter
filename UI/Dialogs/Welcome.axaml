@@ -1,0 +1,21 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:MercuryConverter.UI.Dialogs"
+        x:Class="MercuryConverter.UI.Dialogs.Welcome"
+>
+    <StackPanel Margin="12">
+        <TextBlock FontSize="36" HorizontalAlignment="Center">
+            Welcome to <Bold>MercuryConverter</Bold>!
+        </TextBlock>
+        <TextBlock HorizontalAlignment="Center">
+            <InlineUIContainer BaselineAlignment="Bottom">
+                <!-- TODO: move HOWTO to this repo -->
+                <HyperlinkButton Content="Setup your data folder" Padding="0" NavigateUri="https://github.com/muskit/WacK-Repackager/blob/main/HOWTO.md" />
+            </InlineUIContainer>
+            before proceeding.
+        </TextBlock>
+        <Button Content="Open Data Folder" Click="ClickHandler" HorizontalAlignment="Center" Margin="0 8 0 0" />
+    </StackPanel>
+</UserControl>
