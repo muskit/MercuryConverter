@@ -1,3 +1,6 @@
 [submodule "SaturnData"]
-	path = SaturnData
+	path = _External/SaturnData
 	url = https://github.com/Yasu3D/SaturnData
+[submodule "_External/UAssetAPI"]
+	path = _External/UAssetAPI
+	url = https://github.com/atenfyr/UAssetAPI

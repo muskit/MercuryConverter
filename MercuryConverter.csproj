@@ -21,9 +21,19 @@
     </PackageReference>
     <PackageReference Include="Deadpikle.AvaloniaProgressRing" Version="0.10.10" />
     <PackageReference Include="DialogHost.Avalonia" Version="0.9.3" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
   </ItemGroup>
 
   <ItemGroup>
     <AvaloniaResource Include="Assets\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="_External\**" />
+    <Compile Include="_External\SaturnData\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="_External\UAssetAPI\UAssetAPI\UAssetAPI.csproj" />
   </ItemGroup>
 </Project>
