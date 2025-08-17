@@ -30,10 +30,10 @@
 
   <ItemGroup>
     <Compile Remove="_External\**" />
-    <Compile Include="_External\SaturnData\**" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="_External\UAssetAPI\UAssetAPI\UAssetAPI.csproj" />
+    <ProjectReference Include="_External/SaturnData/SaturnData/SaturnData.csproj" />
   </ItemGroup>
 </Project>
