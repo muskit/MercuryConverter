@@ -6,16 +6,15 @@
         x:Class="MercuryConverter.UI.Dialogs.Welcome"
 >
     <StackPanel Margin="12">
-        <TextBlock FontSize="36" HorizontalAlignment="Center">
-            Welcome to <Bold>MercuryConverter</Bold>!
+        <TextBlock FontSize="24" FontWeight="Light">
+            welcome to <Run FontWeight="SemiBold" Text="mercury"/>converter!
         </TextBlock>
-        <TextBlock HorizontalAlignment="Center">
-            <InlineUIContainer BaselineAlignment="Bottom">
-                <!-- TODO: move HOWTO to this repo -->
-                <HyperlinkButton Content="Setup your data folder" Padding="0" NavigateUri="https://github.com/muskit/WacK-Repackager/blob/main/HOWTO.md" />
+        <TextBlock HorizontalAlignment="Left" Padding="0 6 0 0">
+            <InlineUIContainer>
+                <HyperlinkButton Content="Setup your data folder" Padding="0" NavigateUri="https://github.com/muskit/MercuryConverter/blob/main/HOWTO.md" />
             </InlineUIContainer>
             before proceeding.
         </TextBlock>
-        <Button Content="Open Data Folder" Click="ClickHandler" HorizontalAlignment="Center" Margin="0 8 0 0" />
+        <Button Content="Open Data Folder" Click="ClickHandler" HorizontalAlignment="Right" Margin="0 24 0 0" />
     </StackPanel>
 </UserControl>

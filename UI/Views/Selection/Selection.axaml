@@ -4,6 +4,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MercuryConverter.UI.Views"
         x:Class="MercuryConverter.UI.Views.Selection"
+
+        xmlns:data="clr-namespace:MercuryConverter.Data"
 >
     <DockPanel>
         <!-- Sidebar -->
@@ -41,12 +43,12 @@
                 <TextBox Watermark="Search for title, artist, designer..."/>
             </DockPanel>
             <UserControl Background="{DynamicResource DataGridContentBackground}">
-                <DataGrid Name="ListingTable" IsReadOnly="True" SelectionMode="Extended" ItemsSource="{Binding SongCollection}">
+                <DataGrid Name="ListingTable" IsReadOnly="True" SelectionMode="Extended" ItemsSource="{x:Static data:Database.Songs}">
                     <DataGrid.Columns>
                         <DataGridTextColumn Header="ID" Width="90" Binding="{Binding Id}"/>
                         <DataGridTextColumn Header="Title" Width="*" Binding="{Binding Name}"/>
                         <DataGridTextColumn Header="Artist" Width="*" Binding="{Binding Artist}"/>
-                        <DataGridTextColumn Header="Source" Width="150" Binding="{Binding Source}"/>
+                        <DataGridTextColumn Header="Source" Width="150" Binding="{Binding SourceName}"/>
                     </DataGrid.Columns>
                 </DataGrid>
             </UserControl>

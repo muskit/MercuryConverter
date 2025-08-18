@@ -11,7 +11,6 @@ namespace MercuryConverter.UI.Views;
 
 public partial class Selection : Panel
 {
-    public static ObservableCollection<Song> SongCollection { get; } = new();
     public Selection()
     {
         InitializeComponent();
@@ -41,40 +40,6 @@ public partial class Selection : Panel
             );
         }
 
-        SongCollection.CollectionChanged += OnSongsChg;
-        DataContext = this;
-
-        // placeholder data
-        if (SongCollection.Count == 0)
-        {
-            SongCollection.Add(
-                new Song { Id = "S00-000", Name = "A Name", Artist = "An Artist", Source = Consts.NUM_SOURCE[2] }
-            );
-            SongCollection.Add(
-                new Song { Id = "S00-001", Name = "A Name", Artist = "An Artist", Source = Consts.NUM_SOURCE[3] }
-            );
-        }
-    }
-
-    private void OnSongsChg(object? sender, NotifyCollectionChangedEventArgs e)
-    {
-        Console.WriteLine("Songs collection changed!");
-
-        if (e.NewItems != null)
-        {
-            Console.WriteLine("Added...");
-            foreach (Song added in e.NewItems)
-            {
-                Console.WriteLine($"[{added.Id}] {added.Artist} - {added.Name}");
-            }
-        }
-        if (e.OldItems != null)
-        {
-            Console.WriteLine("Removed...");
-            foreach (Song rem in e.OldItems)
-            {
-                Console.WriteLine($"[{rem.Id}] {rem.Artist} - {rem.Name}");
-            }
-        } 
+        // DataContext = this;
     }
 }
