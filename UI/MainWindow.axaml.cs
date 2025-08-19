@@ -46,4 +46,13 @@ public partial class MainWindow : Window
         Dialog.IsOpen = true;
         Dialog.DialogContent = new DataScanning().Content;
     }
+
+    public void OpenDataHOWTO()
+    {
+        var launcher = GetTopLevel(this)?.Launcher;
+        if (launcher != null)
+        {
+            launcher.LaunchUriAsync(new Uri("https://github.com/muskit/MercuryConverter/blob/main/HOWTO.md"));
+        }
+    }
 }

@@ -31,7 +31,10 @@
                 
                 <Menu Name="MenuBar" DockPanel.Dock="Top">
                     <MenuItem Header="_File">
-                        <MenuItem Name="DataFolderBtn" Header="_Open Data Folder..." Command="{Binding OpenDataHandler}" />
+                        <MenuItem Header="_Open Data Folder..." Command="{Binding OpenDataHandler}" />
+                    </MenuItem>
+                    <MenuItem Header="_Help">
+                        <MenuItem Header="_Data Guide" Command="{Binding OpenDataHOWTO}"/>
                     </MenuItem>
                 </Menu>
 
