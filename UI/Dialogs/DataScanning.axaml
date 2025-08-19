@@ -1,0 +1,47 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:MercuryConverter.UI.Dialogs"
+        xmlns:progRing="clr-namespace:AvaloniaProgressRing;assembly=AvaloniaProgressRing"
+        x:Class="MercuryConverter.UI.Dialogs.DataScanning"
+>
+    <Panel Margin="12">
+        <StackPanel>
+            <TextBlock Name="ScanStatus" FontSize="24" FontWeight="Light" Text="select your data folder..."/>
+            <TextBlock Name="ScanPath" Text="/there/is/a/path/here" IsVisible="false"/>
+
+            <StackPanel Margin="0 6 0 0" Name="ScanError" IsVisible="False">
+                <TextBlock>
+                    <Run FontWeight="DemiBold" Text="ERROR" Foreground="Red"/>
+                    <LineBreak/>
+                    <Run Name="ErrorText" Text="Data pooped its pants"/>
+                </TextBlock>
+            </StackPanel>
+
+            <StackPanel Name="ScanInfo">
+                
+            </StackPanel>
+
+            <Grid ColumnDefinitions="Auto, *" HorizontalAlignment="Stretch">
+                <progRing:ProgressRing Foreground="{DynamicResource SystemBaseMediumColor}"
+                    Name="ProgressAnimation"
+                    Grid.Column="0"
+                    Width="36" 
+                    Height="36"
+                    IsActive="True"
+                    HorizontalAlignment="Left"
+                    Margin="0,15,0,0"/>
+                <StackPanel Margin="0 12 0 0" Name="ButtonGroup" Orientation="Horizontal" Grid.Column="1" HorizontalAlignment="Right" IsVisible="false">
+                    <Button Name="BtnClose" Margin="6 0 0 0" Content="Close" Click="CloseHandler"/>
+                    <Button Name="BtnSelectFolder" Margin="6 0 0 0" Content="Open Data Folder" Click="OpenDataHandler"/>
+                </StackPanel>
+            </Grid>
+        </StackPanel>
+        <!-- <StackPanel Name="SelectErrorView" IsVisible="true">
+            <TextBlock FontSize="24" FontWeight="Light" Text="couldn't fully open data folder"/>
+            <TextBlock Text="Unable to open PATH: ERROR"/>
+            <Button HorizontalAlignment="Right" Margin="0 12 0 0" Content="Open Data Folder" />
+        </StackPanel> -->
+    </Panel>
+</UserControl>

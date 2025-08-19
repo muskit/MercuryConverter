@@ -14,6 +14,6 @@ public partial class Welcome : Window
 
     private void ClickHandler(object sender, RoutedEventArgs args)
     {
-        MainWindow.Instance!.Dialog.DialogContent = new DataOpen().Content;
+        MainWindow.Instance!.Dialog.DialogContent = new DataScanning().Content;
     }
 }

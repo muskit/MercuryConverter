@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Data.Common;
 using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
@@ -65,13 +66,24 @@ public static class Database
                     // skip non-canon difficulties
                     if (diff == Difficulty.None || diff == Difficulty.WorldsEnd) continue;
 
-                    if (GetDiffPair(dataPath, data, diff) is var pair && pair != null)
+                    var lvl = ((FloatPropertyData)data[Consts.DIFF_LVL_KEY[diff]]).Value;
+                    if (lvl == 0) continue; // skip nonexistent level
+
+                    // check chart existence
+                    var chartFilePath = Path.Combine(dataPath, "MusicData", song.Id, $"{song.Id}_{Consts.DIFF_FILENAME_PREPEND[diff]}.mer");
+                    if (!File.Exists(chartFilePath))
                     {
-                        song.charts.Add((diff, pair.Value.Item1, pair.Value.Item2));
+                        // TODO: add warning message to DataScan
+                        Console.WriteLine($"[MISSING CHART] {song.Id} {song.Artist} - {song.Name} / {diff}");
+                        continue;
                     }
+
+                    // TODO: check audio existence; add warning but don't skip
+
+                    song.Levels[(int)diff] = lvl;
                 }
 
-                Dispatcher.UIThread.Invoke(() => Songs.Add(song));
+                Dispatcher.UIThread.Post(() => Songs.Add(song));
             }
             catch (Exception e)
             {
@@ -83,7 +95,6 @@ public static class Database
 
     private static (Entry, Chart)? GetDiffPair(string dataPath, StructPropertyData song, Difficulty diff)
     {
-
         var level = ((FloatPropertyData)song[Consts.DIFF_LVL_KEY[diff]]).Value;
         if (level == 0)
             return null;
@@ -97,6 +108,7 @@ public static class Database
             InferClearThresholdFromDifficulty = false
         });
         e.ClearThreshold = clearThreshold;
+        e.Difficulty = diff;
         var c = NotationSerializer.ToChart(chartFilePath, new NotationReadArgs
         {
             InferClearThresholdFromDifficulty = false

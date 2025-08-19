@@ -32,11 +32,6 @@ public static class Consts
     public static readonly IReadOnlyDictionary<uint, string> NUM_SOURCE = _NUM_SOURCE;
     public static readonly IReadOnlyDictionary<string, uint> SOURCE_NUM = _NUM_SOURCE.ToDictionary(p => p.Value, p => p.Key);
 
-    private static string[] _DIFFICULTIES = {
-        "Normal", "Hard", "Expert", "Inferno"
-    };
-    public static readonly IReadOnlyList<string> DIFFICULTIES = _DIFFICULTIES;
-
     private static readonly Dictionary<Difficulty, string> _DIFF_LVL_KEY = new()
     {
         {Difficulty.Normal, "DifficultyNormalLv"},

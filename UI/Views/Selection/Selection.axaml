@@ -39,7 +39,6 @@
         <!-- Song Listing Table -->
         <DockPanel>
             <DockPanel Margin="0 4 0 8" DockPanel.Dock="Top">
-                <!-- <ComboBox DockPanel.Dock="Right" Width="160" PlaceholderText="Source filter" Name="SourceFilter"/> -->
                 <TextBox Watermark="Search for title, artist, designer..."/>
             </DockPanel>
             <UserControl Background="{DynamicResource DataGridContentBackground}">
@@ -48,7 +47,7 @@
                         <DataGridTextColumn Header="ID" Width="90" Binding="{Binding Id}"/>
                         <DataGridTextColumn Header="Title" Width="*" Binding="{Binding Name}"/>
                         <DataGridTextColumn Header="Artist" Width="*" Binding="{Binding Artist}"/>
-                        <DataGridTextColumn Header="Source" Width="150" Binding="{Binding SourceName}"/>
+                        <DataGridTextColumn Header="Source" Width="150" Binding="{Binding SourceName}" SortMemberPath="Source"/>
                     </DataGrid.Columns>
                 </DataGrid>
             </UserControl>

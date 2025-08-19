@@ -17,6 +17,7 @@ public partial class MainWindow : Window
     {
         Instance = this;
         InitializeComponent();
+        DataContext = this;
 
         // Force dark mode in designer
         if (Design.IsDesignMode)
@@ -38,5 +39,11 @@ public partial class MainWindow : Window
 
         Dialog.DialogContent = new Welcome().Content;
         Dialog.IsOpen = true;
+    }
+
+    public void OpenDataHandler()
+    {
+        Dialog.IsOpen = true;
+        Dialog.DialogContent = new DataScanning().Content;
     }
 }
