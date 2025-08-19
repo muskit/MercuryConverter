@@ -9,7 +9,7 @@
     <Panel Margin="12">
         <StackPanel>
             <TextBlock Name="ScanStatus" FontSize="24" FontWeight="Light" Text="select your data folder..."/>
-            <TextBlock Name="ScanPath" Text="/there/is/a/path/here" IsVisible="false"/>
+            <TextBlock Name="ScanPath" IsVisible="false"/>
 
             <StackPanel Margin="0 6 0 0" Name="ScanError" IsVisible="False">
                 <TextBlock>
@@ -19,8 +19,11 @@
                 </TextBlock>
             </StackPanel>
 
-            <StackPanel Name="ScanInfo">
-                
+            <StackPanel Name="ScanInfo" Margin="0 12 0 12">
+                <TextBlock>
+                    <Run FontWeight="Bold" Name="ScanInfoCountText"/>
+                    <Run Text="songs added."/>
+                </TextBlock>
             </StackPanel>
 
             <Grid ColumnDefinitions="Auto, *" HorizontalAlignment="Stretch">

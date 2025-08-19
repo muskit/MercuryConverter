@@ -21,8 +21,6 @@ public partial class DataScanning : UserControl
         Instance = this;
         InitializeComponent();
 
-        ScanPath.Text = "";
-
         if (!Design.IsDesignMode)
             RunFlow();
     }
@@ -53,7 +51,7 @@ public partial class DataScanning : UserControl
             }
             if (!(File.Exists(Path.Combine(selectedPath, "MusicParameterTable.uasset")) && File.Exists(Path.Combine(selectedPath, "MusicParameterTable.uexp"))))
             {
-                UISetError("Missing MusicParameterTable asset files. Without them, we have nothing to work with.");
+                UISetError("Missing MusicParameterTable asset files.\nPlease ensure you've set up your data folder properly!");
                 return;
             }
 
@@ -72,6 +70,7 @@ public partial class DataScanning : UserControl
         {
             ScanStatus.Text = "select your data folder...";
             ScanPath.IsVisible = false;
+            ScanInfo.IsVisible = false;
             ButtonGroup.IsVisible = false;
             ProgressAnimation.IsVisible = true;
         });
@@ -85,7 +84,7 @@ public partial class DataScanning : UserControl
             ScanStatus.Text = "scanning...";
             ScanPath.IsVisible = true;
             ScanPath.Text = path;
-            ScanInfo.IsVisible = true;
+            ScanInfo.IsVisible = false;
             ButtonGroup.IsVisible = false;
             ProgressAnimation.IsVisible = true;
         });
@@ -98,13 +97,14 @@ public partial class DataScanning : UserControl
             ScanStatus.Text = "scan complete";
             ScanPath.IsVisible = true;
             ScanInfo.IsVisible = true;
+            ScanInfoCountText.Text = Database.Songs.Count.ToString();
             ButtonGroup.IsVisible = true;
             ProgressAnimation.IsVisible = false;
         });
     }
 
     /// <summary>
-    /// Use only when no other processes are running.
+    /// Use only when a scan is no longer running.
     /// </summary>
     /// <param name="error"></param>
     private void UISetError(string? error = null)
