@@ -29,11 +29,8 @@ public partial class DataScanning : UserControl
     {
         Task.Run(async () =>
         {
-            var path = ""; // TODO: set to current/saved data path
-
-            // Content selection
+            var path = ""; // TODO: set to current/saved data path (move to config?)
             var selectedPath = await BeginDirSelection();
-            Console.WriteLine($"selectedPath=[{selectedPath}]");
 
             if (selectedPath == "") // cancelled opening folder
             {
