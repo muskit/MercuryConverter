@@ -49,6 +49,11 @@
                         <DataGridTextColumn Header="Artist" Width="*" Binding="{Binding Artist}"/>
                         <DataGridTextColumn Header="Source" Width="150" Binding="{Binding SourceName}" SortMemberPath="Source"/>
                     </DataGrid.Columns>
+                    <DataGrid.Styles>
+                        <Style Selector="DataGridCell">
+                            <Setter Property="ToolTip.Tip" Value="{Binding RelativeSource={RelativeSource Self}, Path=Content.Text}" />
+                        </Style>
+                    </DataGrid.Styles>
                 </DataGrid>
             </UserControl>
         </DockPanel>
