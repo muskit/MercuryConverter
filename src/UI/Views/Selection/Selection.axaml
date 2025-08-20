@@ -19,11 +19,12 @@
 
             <TabItem Header="Info" FontSize="16">
                 <StackPanel Name="SelectionInfo">
+                    <TextBlock Name="InfoId" FontFamily="monospace" Text="S00-000" HorizontalAlignment="Center"/>
                     <Image Name="InfoImageJacket" Margin="24 0 24 0" Source="/Assets/imgs/jacket-placeholder.png"/>
                     <TextBlock Name="InfoNameText" Text="Name" FontWeight="Bold" HorizontalAlignment="Center" Margin="0 10 0 0"/>
                     <TextBlock Name="InfoArtistText" Text="Artist" HorizontalAlignment="Center"/>
-                    <TextBlock Name="InfoSourceText" Text="Source" HorizontalAlignment="Center"/>
-                    <StackPanel Name="ChartInfoGroup" Margin="0 36 0 0">
+                    <TextBlock Name="InfoSourceText" Text="Source" HorizontalAlignment="Center" Margin="0 6 0 0"/>
+                    <StackPanel Name="ChartInfoGroup" Margin="0 20 0 0">
                     </StackPanel>
                 </StackPanel>
             </TabItem>

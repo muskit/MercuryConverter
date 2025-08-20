@@ -1,16 +1,13 @@
-using Microsoft.VisualBasic;
 using System;
-using System.Collections.ObjectModel;
-using System.Collections.Specialized;
-using System.Threading.Tasks;
+using System.Linq;
 using Avalonia.Controls;
 using MercuryConverter.Data;
-using Avalonia;
 using Avalonia.Threading;
-using Avalonia.Media;
 using System.IO;
 using Avalonia.Media.Imaging;
 using SaturnData.Notation.Core;
+using System.Collections.Generic;
+using UAssetAPI.UnrealTypes.EngineEnums;
 
 namespace MercuryConverter.UI.Views;
 
@@ -20,6 +17,7 @@ public partial class Selection : Panel
     {
         InitializeComponent();
         ListingTable.CellPointerPressed += OnCellClicked;
+        ListingTable.SelectionChanged += OnSelectionChange;
         ListingTable.SelectionMode = DataGridSelectionMode.Extended;
 
         foreach (var (k, v) in Consts.NUM_SOURCE)
@@ -47,13 +45,25 @@ public partial class Selection : Panel
         }
     }
 
+    /// <summary>
+    /// Table cell right click handler.
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
     private void OnCellClicked(object? sender, DataGridCellPointerPressedEventArgs e)
     {
-        Console.WriteLine($"{e.PointerPressedEventArgs.KeyModifiers} - {e.Cell}");
+        var cell = e.Cell;
+        var tb = (TextBlock)cell.Content!;
 
-        if (e.Row.DataContext is Song song)
+        Console.WriteLine($"{e.PointerPressedEventArgs.Properties.IsRightButtonPressed} - {e.Cell.Content}");
+    }
+
+    private void OnSelectionChange(object sender, SelectionChangedEventArgs e)
+    {
+        if (e.AddedItems.Count > 0)
         {
-            Console.WriteLine($"{song.Id}: {song.Artist} - {song.Name}");
+            var song = (Song) e.AddedItems[e.AddedItems.Count-1]!;
+
             Dispatcher.UIThread.Post(() =>
             {
                 if (song.Jacket != null)
@@ -61,6 +71,7 @@ public partial class Selection : Panel
                     var file = File.OpenRead(song.Jacket);
                     InfoImageJacket.Source = new Bitmap(file);
                 }
+                InfoId.Text = song.Id;
                 InfoNameText.Text = song.Name;
                 InfoArtistText.Text = song.Artist;
                 InfoSourceText.Text = song.SourceName;
