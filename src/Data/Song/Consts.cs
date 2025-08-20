@@ -41,14 +41,14 @@ public static class Consts
     };
     public static readonly IReadOnlyDictionary<Difficulty, string> DIFF_LVL_KEY = _DIFF_LVL_KEY;
 
-    private static readonly Dictionary<Difficulty, string> _DIFF_FILENAME_PREPEND = new()
+    private static readonly Dictionary<Difficulty, string> _DIFF_FILENAME_APPEND = new()
     {
         {Difficulty.Normal, "00"},
         {Difficulty.Hard, "01"},
         {Difficulty.Expert, "02"},
         {Difficulty.Inferno, "03"},
     };
-    public static readonly IReadOnlyDictionary<Difficulty, string> DIFF_FILENAME_PREPEND = _DIFF_FILENAME_PREPEND;
+    public static readonly IReadOnlyDictionary<Difficulty, string> DIFF_FILENAME_APPEND = _DIFF_FILENAME_APPEND;
 
     private static readonly Dictionary<Difficulty, string> _DIFF_CLEAR_KEY = new()
     {

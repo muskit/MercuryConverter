@@ -55,10 +55,12 @@ public static class Database
                     Artist = data["ArtistMessage"].ToString()!,
                     Genre = ((IntPropertyData)data["ScoreGenre"]).Value,
                     Source = ((UInt32PropertyData)data["VersionNo"]).Value,
+                    BpmMessage = data["Bpm"].ToString()!,
                     PreviewTime = previewBegin,
                     PreviewLen = previewLen,
                     Jacket = File.Exists(jacketPath) ? jacketPath : null,
                     Copyright = (cTxt == "-" || cTxt == "") ? null : cTxt,
+                    assetData = data,
                 };
 
                 foreach (Difficulty diff in Enum.GetValues(typeof(Difficulty)))
@@ -70,7 +72,7 @@ public static class Database
                     if (lvl == 0) continue; // skip nonexistent level
 
                     // check chart existence
-                    var chartFilePath = Path.Combine(dataPath, "MusicData", song.Id, $"{song.Id}_{Consts.DIFF_FILENAME_PREPEND[diff]}.mer");
+                    var chartFilePath = Path.Combine(dataPath, "MusicData", song.Id, $"{song.Id}_{Consts.DIFF_FILENAME_APPEND[diff]}.mer");
                     if (!File.Exists(chartFilePath))
                     {
                         // TODO: add warning message to DataScan
@@ -78,8 +80,7 @@ public static class Database
                         continue;
                     }
 
-                    // TODO: check audio existence; add warning but don't skip
-
+                    // TODO: check audio existence; add warning but don't skip if missing
                     song.Levels[(int)diff] = (lvl, data[Consts.DIFF_DESIGNER_KEY[diff]].ToString()!);
                 }
 
@@ -91,29 +92,5 @@ public static class Database
             }
         }
         Console.WriteLine("finished music table");
-    }
-
-    private static (Entry, Chart)? GetDiffPair(string dataPath, StructPropertyData song, Difficulty diff)
-    {
-        var level = ((FloatPropertyData)song[Consts.DIFF_LVL_KEY[diff]]).Value;
-        if (level == 0)
-            return null;
-
-        var id = song["AssetDirectory"].ToString()!;
-        var chartFilePath = Path.Combine(dataPath, "MusicData", id, $"{id}_{Consts.DIFF_FILENAME_PREPEND[diff]}.mer");
-        var clearThreshold = ((FloatPropertyData)song[Consts.DIFF_CLEAR_KEY[diff]]).Value;
-
-        var e = NotationSerializer.ToEntry(chartFilePath, new NotationReadArgs
-        {
-            InferClearThresholdFromDifficulty = false
-        });
-        e.ClearThreshold = clearThreshold;
-        e.Difficulty = diff;
-        var c = NotationSerializer.ToChart(chartFilePath, new NotationReadArgs
-        {
-            InferClearThresholdFromDifficulty = false
-        });
-
-        return (e, c);
     }
 }
