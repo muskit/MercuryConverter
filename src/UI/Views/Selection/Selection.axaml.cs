@@ -1,5 +1,4 @@
 using System;
-using System.Linq;
 using Avalonia.Controls;
 using MercuryConverter.Data;
 using Avalonia.Threading;
@@ -7,15 +6,18 @@ using System.IO;
 using Avalonia.Media.Imaging;
 using SaturnData.Notation.Core;
 using System.Collections.Generic;
-using UAssetAPI.UnrealTypes.EngineEnums;
 
 namespace MercuryConverter.UI.Views;
 
 public partial class Selection : Panel
 {
+    private List<Song> selections;
+
     public Selection()
     {
         InitializeComponent();
+        DataContext = this;
+
         ListingTable.CellPointerPressed += OnCellClicked;
         ListingTable.SelectionChanged += OnSelectionChange;
         ListingTable.SelectionMode = DataGridSelectionMode.Extended;
@@ -58,7 +60,7 @@ public partial class Selection : Panel
         Console.WriteLine($"{e.PointerPressedEventArgs.Properties.IsRightButtonPressed} - {e.Cell.Content}");
     }
 
-    private void OnSelectionChange(object sender, SelectionChangedEventArgs e)
+    private void OnSelectionChange(object? sender, SelectionChangedEventArgs e)
     {
         if (e.AddedItems.Count > 0)
         {
