@@ -39,7 +39,7 @@
                 </Menu>
 
                 <TabControl>
-                    <TabItem Header="selection">
+                    <TabItem Name="TabSelection" Header="selection">
                         <UserControl Name="SelectionControl"/>
                     </TabItem>
 

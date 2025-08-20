@@ -1,8 +1,10 @@
 using System;
+using System.Collections.Specialized;
 using System.Threading.Tasks;
 using Avalonia.Controls;
 using Avalonia.Styling;
 using Avalonia.Threading;
+using MercuryConverter.Data;
 using MercuryConverter.UI.Dialogs;
 using MercuryConverter.UI.Views;
 
@@ -30,6 +32,9 @@ public partial class MainWindow : Window
 
         // Show dialog on startup
         Activated += OnActivated;
+
+        Selection.selections.CollectionChanged += OnDbSelChanged;
+        Database.Songs.CollectionChanged += OnDbSelChanged;
     }
 
     private void OnActivated(object? sender, EventArgs e)
@@ -39,6 +44,14 @@ public partial class MainWindow : Window
 
         Dialog.DialogContent = new Welcome().Content;
         Dialog.IsOpen = true;
+    }
+
+    private void OnDbSelChanged(object? sender, NotifyCollectionChangedEventArgs e)
+    {
+        if (Database.Songs.Count > 0)
+        {
+            TabSelection.Header = $"selection ({Selection.selections.Count}/{Database.Songs.Count})";
+        }
     }
 
     public void OpenDataHandler()

@@ -11,7 +11,7 @@ namespace MercuryConverter.UI.Views;
 
 public partial class Selection : Panel
 {
-    private List<Song> selections;
+    public static ObservableRangeCollection<Song> selections = new();
 
     public Selection()
     {
@@ -62,9 +62,19 @@ public partial class Selection : Panel
 
     private void OnSelectionChange(object? sender, SelectionChangedEventArgs e)
     {
-        if (e.AddedItems.Count > 0)
+        selections.Clear();
+        List<Song> sels = new();
+        foreach (Song s in ListingTable.SelectedItems)
         {
-            var song = (Song) e.AddedItems[e.AddedItems.Count-1]!;
+            sels.Add(s);
+        }
+        selections.AddRange(sels);
+
+        if (ListingTable.SelectedItems.Count > 0)
+        {
+            Song song = e.AddedItems.Count > 0 ?
+                (Song) e.AddedItems[e.AddedItems.Count - 1]! :
+                (Song) ListingTable.SelectedItems[ListingTable.SelectedItems.Count - 1]!;
 
             Dispatcher.UIThread.Post(() =>
             {
