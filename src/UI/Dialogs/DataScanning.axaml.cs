@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -8,14 +7,14 @@ using Avalonia.Interactivity;
 using Avalonia.Platform.Storage;
 using Avalonia.Threading;
 using MercuryConverter.Data;
-using UAssetAPI;
-using UAssetAPI.UnrealTypes;
 
 namespace MercuryConverter.UI.Dialogs;
 
 public partial class DataScanning : UserControl
 {
     public static DataScanning? Instance { get; private set; }
+
+
     public DataScanning()
     {
         Instance = this;
@@ -66,7 +65,7 @@ public partial class DataScanning : UserControl
         Dispatcher.UIThread.Post(() =>
         {
             ScanStatus.Text = "select your data folder...";
-            ScanPath.IsVisible = false;
+            ScanPath.IsVisible = true;
             ScanInfo.IsVisible = false;
             ButtonGroup.IsVisible = false;
             ProgressAnimation.IsVisible = true;
