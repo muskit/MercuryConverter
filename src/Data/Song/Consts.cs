@@ -58,4 +58,12 @@ public static class Consts
         {Difficulty.Inferno, "ClearNormaRateInferno"},
     };
     public static readonly IReadOnlyDictionary<Difficulty, string> DIFF_CLEAR_KEY = _DIFF_CLEAR_KEY;
+
+    public static readonly IReadOnlyDictionary<Difficulty, string> DIFF_DESIGNER_KEY = new Dictionary<Difficulty, string>()
+    {
+        {Difficulty.Normal, "NotesDesignerNormal"},
+        {Difficulty.Hard, "NotesDesignerHard"},
+        {Difficulty.Expert, "NotesDesignerExpert"},
+        {Difficulty.Inferno, "NotesDesignerInferno"},
+    };
 }

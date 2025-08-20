@@ -80,7 +80,7 @@ public static class Database
 
                     // TODO: check audio existence; add warning but don't skip
 
-                    song.Levels[(int)diff] = lvl;
+                    song.Levels[(int)diff] = (lvl, data[Consts.DIFF_DESIGNER_KEY[diff]].ToString()!);
                 }
 
                 Dispatcher.UIThread.Post(() => Songs.Add(song));

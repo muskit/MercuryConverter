@@ -10,6 +10,7 @@ using Avalonia.Threading;
 using Avalonia.Media;
 using System.IO;
 using Avalonia.Media.Imaging;
+using SaturnData.Notation.Core;
 
 namespace MercuryConverter.UI.Views;
 
@@ -63,6 +64,20 @@ public partial class Selection : Panel
                 InfoNameText.Text = song.Name;
                 InfoArtistText.Text = song.Artist;
                 InfoSourceText.Text = song.SourceName;
+
+                ChartInfoGroup.Children.Clear();
+                foreach (Difficulty diff in Enum.GetValues(typeof(Difficulty)))
+                {
+                    // skip non-canon difficulties
+                    if (diff == Difficulty.None || diff == Difficulty.WorldsEnd) continue;
+
+                    var idx = (int)diff;
+                    var level = song.Levels[idx];
+                    if (level == null) continue;
+
+                    var ci = new ChartInfo(song, diff);
+                    ChartInfoGroup.Children.Add(ci);
+                }
             });
         }
     }

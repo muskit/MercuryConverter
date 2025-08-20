@@ -22,7 +22,7 @@ public class Song
     public required float PreviewTime { get; set; }
     public required float PreviewLen { get; set; }
     public string SourceName => Consts.NUM_SOURCE[Source];
-    public float?[] Levels { get; set; } = { null, null, null, null };
+    public (float, string)?[] Levels { get; set; } = { null, null, null, null };
     
 
     // TODO: For SaturnData.Entry instances, use this Guid format:
