@@ -15,9 +15,6 @@
         ExtendClientAreaToDecorationsHint="True"
 >
     <dialogHost:DialogHost CloseOnClickAway="False" Name="Dialog">
-        <dialogHost:DialogHost.DialogContent>
-            <Button Content="Test"/>
-        </dialogHost:DialogHost.DialogContent>
 
         <!-- Components -->
         <Panel>

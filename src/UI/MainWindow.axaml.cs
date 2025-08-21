@@ -30,7 +30,7 @@ public partial class MainWindow : Window
         // Show dialog on startup
         Activated += OnActivated;
 
-        Selection.selections.CollectionChanged += OnDbSelChanged;
+        Selection.Selections.CollectionChanged += OnDbSelChanged;
         Database.Songs.CollectionChanged += OnDbSelChanged;
     }
 
@@ -51,7 +51,7 @@ public partial class MainWindow : Window
     {
         if (Database.Songs.Count > 0)
         {
-            TabSelection.Header = $"selection ({Selection.selections.Count}/{Database.Songs.Count})";
+            TabSelection.Header = $"selection ({Selection.Selections.Count}/{Database.Songs.Count})";
         }
     }
 

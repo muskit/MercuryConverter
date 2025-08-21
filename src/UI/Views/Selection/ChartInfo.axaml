@@ -18,6 +18,6 @@
                 </ToolTip.Tip>
             </Canvas>
 
-            <TextBlock Name="DesignerTxt" Text="muskit" HorizontalAlignment="Center" ToolTip.Tip="{Binding RelativeSource={RelativeSource Self}, Path=Text}"/>
+            <TextBlock Name="DesignerTxt" Text="Charter" TextWrapping="Wrap" TextAlignment="Center" HorizontalAlignment="Center" ToolTip.Tip="{Binding RelativeSource={RelativeSource Self}, Path=Text}"/>
     </StackPanel>
 </UserControl>
