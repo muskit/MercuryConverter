@@ -1,7 +1,5 @@
 # Preparing files
-This is a guide to populating the `data` working folder in this application's directory, which will eventually contain all relevant data for repacking & converting charts. You may set up this folder elsewhere for storage space reasons; you'll get to choose a different working folder path. We will refer to this working folder as `data` throughout the guide.
-
-Start with the `data` folder bundled with the app/repo. Feel free to move it to another location as mentioned above.
+This is a guide to populating the `data` working folder found in this application's directory, which will eventually contain all relevant data for repacking & converting charts. You may set up this folder elsewhere for storage space reasons. We will refer to this working folder as `data` throughout the guide.
 
 **This project will only repack audio on Reverse 3.07 properly.**
 
@@ -14,7 +12,7 @@ Start with the `data` folder bundled with the app/repo. Feel free to move it to 
 ## Song Audio (`data/MER_BGM`)
 *~18.8 GB for WAVs*
 
-Due to the audio indexing data in this project only done for **Reverse 3.07**, these steps will only work for game files of that version.
+Due to the audio indexing data in this project only done for **Reverse 3.07**, this process will only work for files of that version.
 
 You will need the latest version of [Audio Cue Editor (ACE)](https://github.com/LazyBone152/ACE).
 

@@ -38,4 +38,10 @@
     <ProjectReference Include="..\_External\UAssetAPI\UAssetAPI\UAssetAPI.csproj" />
     <ProjectReference Include="../_External/SaturnData/SaturnData/SaturnData.csproj" />
   </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="..\dist\**\*">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
 </Project>
