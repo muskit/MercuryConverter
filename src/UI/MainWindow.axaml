@@ -43,6 +43,7 @@
                     </TabItem>
 
                     <TabItem Header="export">
+                        <views:Export />
                     </TabItem>
                 </TabControl>
             </DockPanel>

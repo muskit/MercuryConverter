@@ -91,6 +91,6 @@ public static class Database
                 Console.WriteLine($"Couldn't construct a song!\n{e}");
             }
         }
-        Console.WriteLine("finished music table");
+        Console.WriteLine("Data setup finished.");
     }
 }

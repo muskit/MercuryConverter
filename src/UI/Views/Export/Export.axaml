@@ -1,0 +1,71 @@
+<Panel xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+
+        d:DesignWidth="600" d:DesignHeight="500"
+
+        x:Class="MercuryConverter.UI.Views.Export"
+
+        xmlns:views="clr-namespace:MercuryConverter.UI.Views"
+>
+    <DockPanel>
+        <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Margin="12 0 0 3">
+            <RadioButton GroupName="ExportTarget" Content="Export selected" IsChecked="true" Margin="0 0 24 0"/>
+            <RadioButton GroupName="ExportTarget" Content="Export All"/>
+        </StackPanel>
+
+        <Grid RowDefinitions="*, Auto" DockPanel.Dock="Right" Width="200" Margin="12 0 0 0">
+            <StackPanel Grid.Row="0">
+                <TextBlock Text="Chart Format" FontWeight="Medium" Margin="0 0 0 4"/>
+                <ComboBox Name="ChartFormat" Margin="0 0 0 16" SelectedIndex="2">
+                    <ComboBoxItem Content=".sat (V1)"/>
+                    <ComboBoxItem Content=".sat (V2)"/>
+                    <ComboBoxItem Content=".sat (V3)"/>
+                    <ComboBoxItem Content=".mer (WacK)"/>
+                </ComboBox>
+
+                <TextBlock Text="Audio Format" FontWeight="Medium" Margin="0 0 0 4"/>
+                <StackPanel Margin="10 0 0 36">
+                    <RadioButton GroupName="AudioFormat" IsChecked="true" Content="Leave as WAV"/>
+                    <RadioButton Name="ShouldAudioConvertRadio" GroupName="AudioFormat">
+                        <ComboBox Name="AudioConvertFormat" IsEnabled="false" PlaceholderText="Convert to...">
+                            <ComboBoxItem Content="mp3"/>
+                            <ComboBoxItem Content="ogg"/>
+                        </ComboBox>
+                    </RadioButton>
+                </StackPanel>
+
+                <CheckBox Content="Exclude videos"/>
+                <CheckBox Content="Export to source subfolders"/>
+                <CheckBox Content="Delete original files"/>
+
+                <TextBlock Margin="0 24 0 4" Text="Threads"/>
+                <TextBox Width="36" Text="4" HorizontalAlignment="Left"/>
+            </StackPanel>
+            <StackPanel Grid.Row="1" >
+                <Button HorizontalAlignment="Stretch">
+                    <TextBlock Text="Export" TextAlignment="Center"/>
+                </Button>
+            </StackPanel>
+        </Grid>
+
+        <UserControl Background="{DynamicResource DataGridContentBackground}">
+            <ScrollViewer Name="TableContainer">
+                <DataGrid Name="ListingTable" IsReadOnly="True" SelectionMode="Extended" IsHitTestVisible="False" ItemsSource="{x:Static views:Selection.Selections}">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Status"/>
+                        <DataGridTextColumn Header="ID" Width="90" Binding="{Binding Id}"/>
+                        <DataGridTextColumn Header="Title" Width="*" Binding="{Binding Name}"/>
+                        <DataGridTextColumn Header="Artist" Width="*" Binding="{Binding Artist}"/>
+                    </DataGrid.Columns>
+                    <DataGrid.Styles>
+                        <Style Selector="DataGridCell">
+                            <Setter Property="ToolTip.Tip" Value="{Binding RelativeSource={RelativeSource Self}, Path=Content.Text}" />
+                        </Style>
+                    </DataGrid.Styles>
+                </DataGrid>
+            </ScrollViewer>
+        </UserControl>
+    </DockPanel>
+</Panel>

@@ -3,8 +3,9 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MercuryConverter.UI.Views"
-        x:Class="MercuryConverter.UI.Views.Selection"
+        d:DesignWidth="800" d:DesignHeight="400"
 
+        x:Class="MercuryConverter.UI.Views.Selection"
         xmlns:data="clr-namespace:MercuryConverter.Data"
 >
     <DockPanel>
@@ -30,10 +31,10 @@
             <TabItem Header="Filters" FontSize="16">
                 <StackPanel>
                     <!-- Sources Filter -->
-                    <TextBlock Text="Sources" FontWeight="Bold" Margin="0 0 0 4"/>
+                    <TextBlock Text="Sources" FontWeight="Medium" Margin="0 0 0 4"/>
                     <StackPanel Margin="10 0 0 0" Name="FilterSourceContainer"/>
                     <!-- Categories Filter -->
-                    <TextBlock Text="Categories" FontWeight="Bold" Margin="0 20 0 4"/>
+                    <TextBlock Text="Categories" FontWeight="Medium" Margin="0 20 0 4"/>
                     <StackPanel Margin="10 0 0 0" Name="FilterCategoryContainer"/>
                 </StackPanel>
             </TabItem>
