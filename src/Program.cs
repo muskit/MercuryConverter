@@ -1,10 +1,11 @@
 ﻿namespace MercuryConverter;
 
-using Avalonia;
 using System;
 
-using MercuryConverter.UI;
+using Avalonia;
 using Avalonia.Logging;
+
+using MercuryConverter.UI;
 
 class Program
 {
@@ -14,16 +15,15 @@ class Program
     [STAThread]
     public static void Main(string[] args)
     {
-        // BuildAvaloniaApp().StartWithClassicDesktopLifetime(args);
+        new Settings();
+
         try
         {
-            // prepare and run your App here
             BuildAvaloniaApp()
                 .StartWithClassicDesktopLifetime(args);
         }
         catch (Exception e)
         {
-            // here we can work with the exception, for example add it to our log file
             Console.WriteLine($"App exception!!\b{e}");
         }
     }

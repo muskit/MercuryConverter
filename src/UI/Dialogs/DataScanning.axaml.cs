@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -12,12 +13,12 @@ namespace MercuryConverter.UI.Dialogs;
 
 public partial class DataScanning : UserControl
 {
-    public static DataScanning? Instance { get; private set; }
+    private bool requiresUser;
 
-
-    public DataScanning()
+    public DataScanning(bool requiresUser = true)
     {
-        Instance = this;
+        this.requiresUser = requiresUser;
+        Console.WriteLine($"DataScan should stay open: {requiresUser}");
         InitializeComponent();
 
         if (!Design.IsDesignMode)
@@ -28,34 +29,42 @@ public partial class DataScanning : UserControl
     {
         Task.Run(async () =>
         {
-            var path = ""; // TODO: set to current/saved data path (move to config?)
-            var selectedPath = await BeginDirSelection();
-
-            if (selectedPath == "") // cancelled opening folder
+            if (Settings.I!.DataPath == "" || requiresUser) // no data path saved
             {
-                // TODO:
-                // return and go to completed mode if scan already completed
-                // continue if no scan has been completed
-                // break if we already have a path but somehow not scanned
-                UISetError("No data folder provided.");
-                return;
+                var selectedPath = await BeginDirSelection(Settings.I!.DataPath);
+                if (selectedPath == "") // cancelled opening folder
+                {
+                    // TODO:
+                    // return and go to completed mode if scan already completed
+                    // continue if no scan has been completed
+                    // break if we already have a path but somehow not scanned
+                    Dispatcher.UIThread.Post(() => ScanPath.Text = "");
+                    UISetError("No data folder provided.");
+                    return;
+                }
+                Settings.I.DataPath = selectedPath;
             }
-            if (!Directory.Exists(selectedPath))
+
+            Dispatcher.UIThread.Post(() => ScanPath.Text = Settings.I.DataPath);
+            if (!Directory.Exists(Settings.I.DataPath))
             {
                 UISetError("Folder does not exist.");
                 return;
             }
-            if (!(File.Exists(Path.Combine(selectedPath, "MusicParameterTable.uasset")) && File.Exists(Path.Combine(selectedPath, "MusicParameterTable.uexp"))))
+            if (!(File.Exists(Path.Combine(Settings.I.DataPath, "MusicParameterTable.uasset"))
+                && File.Exists(Path.Combine(Settings.I.DataPath, "MusicParameterTable.uexp"))))
             {
                 UISetError("Missing MusicParameterTable asset files.\nPlease ensure you've set up your data folder properly!");
                 return;
             }
 
-            path = selectedPath;
+            UIScanningMode(Settings.I.DataPath);
+            Database.SetupNew(Settings.I.DataPath);
 
-            UIScanningMode(path);
-            Database.SetupNew(path);
-            UIScanCompletedMode();
+            if (requiresUser) // TODO: or if there are warnings
+                UIScanCompletedMode();
+            else
+                Dispatcher.UIThread.Post(() => MainWindow.Instance!.Dialog.IsOpen = false);
         });
     }
 
@@ -65,7 +74,7 @@ public partial class DataScanning : UserControl
         Dispatcher.UIThread.Post(() =>
         {
             ScanStatus.Text = "select your data folder...";
-            ScanPath.IsVisible = true;
+            ScanPath.IsVisible = false;
             ScanInfo.IsVisible = false;
             ButtonGroup.IsVisible = false;
             ProgressAnimation.IsVisible = true;
@@ -105,6 +114,7 @@ public partial class DataScanning : UserControl
     /// <param name="error"></param>
     private void UISetError(string? error = null)
     {
+        requiresUser = true;
         Dispatcher.UIThread.Post(() =>
         {
             if (error == null)
@@ -115,6 +125,8 @@ public partial class DataScanning : UserControl
 
             ScanError.IsVisible = true;
             ErrorText.Text = error;
+            ScanPath.IsVisible = ScanPath.Text == "" ? false : true;
+            ScanInfo.IsVisible = false;
             ProgressAnimation.IsVisible = false;
             ButtonGroup.IsVisible = true;
             ScanStatus.Text = "an error has occurred";
@@ -159,8 +171,9 @@ public partial class DataScanning : UserControl
         });
     }
 
-    private void OpenDataHandler(object sender, RoutedEventArgs args)
+    private void OpenFolderHandler(object sender, RoutedEventArgs args)
     {
+        requiresUser = true;
         RunFlow();
     }
 }

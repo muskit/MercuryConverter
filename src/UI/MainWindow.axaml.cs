@@ -27,9 +27,6 @@ public partial class MainWindow : Window
             RequestedThemeVariant = ThemeVariant.Dark;
         }
 
-        // Setup tab views
-        SelectionControl.Content = new Selection();
-
         // Show dialog on startup
         Activated += OnActivated;
 
@@ -42,8 +39,12 @@ public partial class MainWindow : Window
         if (initialShown) return;
         initialShown = true;
 
-        Dialog.DialogContent = new Welcome().Content;
-        Dialog.IsOpen = true;
+        Dispatcher.UIThread.Post(() =>
+        {
+            Dialog.IsOpen = true;
+            Dialog.DialogContent = Settings.I!.DataPath == "" ?
+                new Welcome().Content : new DataScanning(false).Content;
+        });
     }
 
     private void OnDbSelChanged(object? sender, NotifyCollectionChangedEventArgs e)
@@ -57,7 +58,7 @@ public partial class MainWindow : Window
     public void OpenDataHandler()
     {
         Dialog.IsOpen = true;
-        Dialog.DialogContent = new DataScanning().Content;
+        Dialog.DialogContent = new DataScanning(true).Content;
     }
 
     public void OpenDataHOWTO()

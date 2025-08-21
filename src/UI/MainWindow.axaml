@@ -5,6 +5,8 @@
         xmlns:dialogHost="clr-namespace:DialogHostAvalonia;assembly=DialogHost.Avalonia"
         xmlns:local="clr-namespace:MercuryConverter.UI"
         x:Class="MercuryConverter.UI.MainWindow"
+        
+        xmlns:views="clr-namespace:MercuryConverter.UI.Views"
 
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         Title="MercuryConverter"
@@ -40,7 +42,7 @@
 
                 <TabControl>
                     <TabItem Name="TabSelection" Header="selection">
-                        <UserControl Name="SelectionControl"/>
+                        <views:Selection />
                     </TabItem>
 
                     <TabItem Header="export">
