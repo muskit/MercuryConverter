@@ -18,7 +18,6 @@ public partial class DataScanning : UserControl
     public DataScanning(bool requiresUser = true)
     {
         this.requiresUser = requiresUser;
-        Console.WriteLine($"DataScan should stay open: {requiresUser}");
         InitializeComponent();
 
         if (!Design.IsDesignMode)
@@ -114,7 +113,6 @@ public partial class DataScanning : UserControl
     /// <param name="error"></param>
     private void UISetError(string? error = null)
     {
-        requiresUser = true;
         Dispatcher.UIThread.Post(() =>
         {
             if (error == null)
@@ -123,6 +121,7 @@ public partial class DataScanning : UserControl
                 return;
             }
 
+            requiresUser = true;
             ScanError.IsVisible = true;
             ErrorText.Text = error;
             ScanPath.IsVisible = ScanPath.Text == "" ? false : true;
