@@ -8,15 +8,17 @@
         x:Class="MercuryConverter.UI.Views.Export"
 
         xmlns:views="clr-namespace:MercuryConverter.UI.Views"
+        xmlns:sys="clr-namespace:System;assembly=mscorlib"
+        xmlns:util="clr-namespace:MercuryConverter.Utility"
 >
     <DockPanel>
-        <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Margin="12 0 0 3">
+        <StackPanel Name="ExportSelectionPane" DockPanel.Dock="Top" Orientation="Horizontal" Margin="12 0 0 3">
             <RadioButton GroupName="ExportTarget" Content="Export selected" IsChecked="true" Margin="0 0 24 0"/>
-            <RadioButton GroupName="ExportTarget" Content="Export All"/>
+            <RadioButton Name="RadioExportAll" GroupName="ExportTarget" Content="Export All"/>
         </StackPanel>
 
         <Grid RowDefinitions="*, Auto" DockPanel.Dock="Right" Width="200" Margin="12 0 0 0">
-            <StackPanel Grid.Row="0">
+            <StackPanel Name="ExportOptionsPane" Grid.Row="0">
                 <TextBlock Text="Chart Format" FontWeight="Medium" Margin="0 0 0 4"/>
                 <ComboBox Name="ChartFormat" Margin="0 0 0 16" SelectedIndex="2">
                     <ComboBoxItem Content=".sat (V1)"/>
@@ -26,46 +28,53 @@
                 </ComboBox>
 
                 <TextBlock Text="Audio Format" FontWeight="Medium" Margin="0 0 0 4"/>
-                <StackPanel Margin="10 0 0 36">
+                <StackPanel Margin="10 0 0 42">
                     <RadioButton GroupName="AudioFormat" IsChecked="true" Content="Leave as WAV"/>
-                    <RadioButton Name="ShouldAudioConvertRadio" GroupName="AudioFormat">
-                        <ComboBox Name="AudioConvertFormat" IsEnabled="false" PlaceholderText="Convert to...">
+                    <RadioButton Name="RadioShouldAudioConvert" GroupName="AudioFormat">
+                        <ComboBox Name="ListSelectAudioConvertFormat" IsEnabled="false" PlaceholderText="Convert to...">
                             <ComboBoxItem Content="mp3"/>
                             <ComboBoxItem Content="ogg"/>
                         </ComboBox>
                     </RadioButton>
                 </StackPanel>
 
-                <CheckBox Content="Exclude videos"/>
-                <CheckBox Content="Export to source subfolders"/>
-                <CheckBox Content="Delete original files"/>
+                <CheckBox Name="TickExcludeVideos" Content="Exclude videos"/>
+                <CheckBox Name="TickGroupExports" Content="Group song folders by release version"/>
+                <!-- <CheckBox Content="Delete original files"/> -->
 
-                <TextBlock Margin="0 24 0 4" Text="Threads"/>
-                <TextBox Width="36" Text="4" HorizontalAlignment="Left"/>
+                <TextBlock Margin="0 24 0 4" Text="# Concurrent Operations"/>
+                <StackPanel Orientation="Horizontal">
+                    <TextBox Name="NumThreads" Width="36" HorizontalAlignment="Left"/>
+                    <TextBlock VerticalAlignment="Center" Padding="4 0 0 0">
+                        <Run Text="/"/>
+                        <Run Text="{x:Static util:Utils.CoreCount}"/>
+                    </TextBlock>
+                </StackPanel>
+
             </StackPanel>
             <StackPanel Grid.Row="1" >
-                <Button HorizontalAlignment="Stretch">
+                <Button Name="BtnExport" HorizontalAlignment="Stretch" Command="{Binding OnExportClick}">
                     <TextBlock Text="Export" TextAlignment="Center"/>
                 </Button>
             </StackPanel>
         </Grid>
 
         <UserControl Background="{DynamicResource DataGridContentBackground}">
-            <ScrollViewer Name="TableContainer">
-                <DataGrid Name="ListingTable" IsReadOnly="True" SelectionMode="Extended" IsHitTestVisible="False" ItemsSource="{x:Static views:Selection.Selections}">
-                    <DataGrid.Columns>
-                        <DataGridTextColumn Header="Status"/>
-                        <DataGridTextColumn Header="ID" Width="90" Binding="{Binding Id}"/>
-                        <DataGridTextColumn Header="Title" Width="*" Binding="{Binding Name}"/>
-                        <DataGridTextColumn Header="Artist" Width="*" Binding="{Binding Artist}"/>
-                    </DataGrid.Columns>
-                    <DataGrid.Styles>
-                        <Style Selector="DataGridCell">
-                            <Setter Property="ToolTip.Tip" Value="{Binding RelativeSource={RelativeSource Self}, Path=Content.Text}" />
-                        </Style>
-                    </DataGrid.Styles>
-                </DataGrid>
-            </ScrollViewer>
+            <DataGrid Name="ListingTable" IsReadOnly="True" ItemsSource="{Binding Rows}"
+                CanUserResizeColumns="True" CanUserSortColumns="False" 
+            >
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Status" Binding="{Binding StatusTxt}"/>
+                    <DataGridTextColumn Header="ID" Width="90" Binding="{Binding Song.Id}"/>
+                    <DataGridTextColumn Header="Title" Width="*" Binding="{Binding Song.Name}"/>
+                    <DataGridTextColumn Header="Artist" Width="*" Binding="{Binding Song.Artist}"/>
+                </DataGrid.Columns>
+                <DataGrid.Styles>
+                    <Style Selector="DataGridCell">
+                        <Setter Property="ToolTip.Tip" Value="{Binding RelativeSource={RelativeSource Self}, Path=Content.Text}" />
+                    </Style>
+                </DataGrid.Styles>
+            </DataGrid>
         </UserControl>
     </DockPanel>
 </Panel>

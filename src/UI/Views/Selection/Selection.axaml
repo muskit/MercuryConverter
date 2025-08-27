@@ -45,12 +45,14 @@
                 <TextBox Watermark="Search for title, artist, designer..."/>
             </DockPanel>
             <UserControl Background="{DynamicResource DataGridContentBackground}">
-                <DataGrid Name="ListingTable" IsReadOnly="True" SelectionMode="Extended" ItemsSource="{x:Static data:Database.Songs}">
+                <DataGrid Name="ListingTable" IsReadOnly="True" SelectionMode="Extended" ItemsSource="{x:Static data:Database.Songs}"
+                    CanUserResizeColumns="True"
+                >
                     <DataGrid.Columns>
                         <DataGridTextColumn Header="ID" Width="90" Binding="{Binding Id}"/>
                         <DataGridTextColumn Header="Title" Width="*" Binding="{Binding Name}"/>
                         <DataGridTextColumn Header="Artist" Width="*" Binding="{Binding Artist}"/>
-                        <DataGridTextColumn Header="Source" Width="150" Binding="{Binding SourceName}" SortMemberPath="Source"/>
+                        <DataGridTextColumn Header="Version Released" Width="150" Binding="{Binding SourceName}" SortMemberPath="Source"/>
                     </DataGrid.Columns>
                     <DataGrid.Styles>
                         <Style Selector="DataGridCell">

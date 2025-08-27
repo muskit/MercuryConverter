@@ -8,6 +8,7 @@ using Avalonia.Interactivity;
 using Avalonia.Platform.Storage;
 using Avalonia.Threading;
 using MercuryConverter.Data;
+using MercuryConverter.Utility;
 
 namespace MercuryConverter.UI.Dialogs;
 
@@ -30,7 +31,8 @@ public partial class DataScanning : UserControl
         {
             if (Settings.I!.DataPath == "" || requiresUser) // no data path saved
             {
-                var selectedPath = await BeginDirSelection(Settings.I!.DataPath);
+                UISelectMode();
+                var selectedPath = await Utils.BeginDirSelection("Locate Data Folder", Settings.I!.DataPath);
                 if (selectedPath == "") // cancelled opening folder
                 {
                     // TODO:
@@ -131,35 +133,6 @@ public partial class DataScanning : UserControl
             ScanStatus.Text = "an error has occurred";
         });
 
-    }
-
-    private async Task<string> BeginDirSelection(string? startDir = null)
-    {
-        IReadOnlyList<IStorageFolder>? dirSelection = null;
-
-        UISelectMode();
-
-        await Dispatcher.UIThread.Invoke(async () =>
-        {
-            await Task.Delay(250);
-            var tl = TopLevel.GetTopLevel(MainWindow.Instance)!;
-            dirSelection = await tl.StorageProvider.OpenFolderPickerAsync
-            (
-                new FolderPickerOpenOptions
-                {
-                    Title = "Locate Data Folder",
-                    AllowMultiple = false,
-                    SuggestedStartLocation = startDir == null ? null : await tl.StorageProvider.TryGetFolderFromPathAsync(startDir),
-                }
-            );
-        });
-
-        if (dirSelection!.Count <= 0)
-        {
-            return "";
-        }
-
-        return dirSelection!.First().TryGetLocalPath()!;
     }
 
     private void CloseHandler(object sender, RoutedEventArgs args)

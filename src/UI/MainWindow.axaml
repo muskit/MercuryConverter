@@ -36,12 +36,12 @@
                     </MenuItem>
                 </Menu>
 
-                <TabControl>
+                <TabControl Name="TabControl">
                     <TabItem Name="TabSelection" Header="selection">
                         <views:Selection />
                     </TabItem>
 
-                    <TabItem Header="export">
+                    <TabItem Name="TabExport" Header="export">
                         <views:Export />
                     </TabItem>
                 </TabControl>
