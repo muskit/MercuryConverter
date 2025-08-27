@@ -10,6 +10,7 @@
         xmlns:views="clr-namespace:MercuryConverter.UI.Views"
         xmlns:sys="clr-namespace:System;assembly=mscorlib"
         xmlns:util="clr-namespace:MercuryConverter.Utility"
+        xmlns:merc="clr-namespace:MercuryConverter"
 >
     <DockPanel>
         <StackPanel Name="ExportSelectionPane" DockPanel.Dock="Top" Orientation="Horizontal" Margin="12 0 0 3">
@@ -20,11 +21,11 @@
         <Grid RowDefinitions="*, Auto" DockPanel.Dock="Right" Width="200" Margin="12 0 0 0">
             <StackPanel Name="ExportOptionsPane" Grid.Row="0">
                 <TextBlock Text="Chart Format" FontWeight="Medium" Margin="0 0 0 4"/>
-                <ComboBox Name="ChartFormat" Margin="0 0 0 16" SelectedIndex="2">
+                <ComboBox Name="ListSelectChartFormat" Margin="0 0 0 16" SelectedIndex="3">
+                    <ComboBoxItem Content=".mer (WacK)"/>
                     <ComboBoxItem Content=".sat (V1)"/>
                     <ComboBoxItem Content=".sat (V2)"/>
                     <ComboBoxItem Content=".sat (V3)"/>
-                    <ComboBoxItem Content=".mer (WacK)"/>
                 </ComboBox>
 
                 <TextBlock Text="Audio Format" FontWeight="Medium" Margin="0 0 0 4"/>
@@ -64,7 +65,14 @@
                 CanUserResizeColumns="True" CanUserSortColumns="False" 
             >
                 <DataGrid.Columns>
-                    <DataGridTextColumn Header="Status" Binding="{Binding StatusTxt}"/>
+                    <DataGridTemplateColumn Header="Status">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Image Source="{Binding StatusImg}" Height="24"/>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+
                     <DataGridTextColumn Header="ID" Width="90" Binding="{Binding Song.Id}"/>
                     <DataGridTextColumn Header="Title" Width="*" Binding="{Binding Song.Name}"/>
                     <DataGridTextColumn Header="Artist" Width="*" Binding="{Binding Song.Artist}"/>

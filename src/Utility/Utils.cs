@@ -1,8 +1,10 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Avalonia.Controls;
+using Avalonia.Platform;
 using Avalonia.Platform.Storage;
 using Avalonia.Threading;
 using MercuryConverter.UI;
@@ -38,4 +40,11 @@ public static class Utils
 
         return dirSelection!.First().TryGetLocalPath()!;
     }
+
+    /// <summary>
+    /// Get an AvaloniaResource asset.
+    /// </summary>
+    /// <param name="path">Forward-slash (/)-separated path to asset.</param>
+    /// <returns></returns>
+    public static Stream AssetPath(string path) => AssetLoader.Open(new Uri("avares://MercuryConverter/Assets/" + path));
 }

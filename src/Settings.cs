@@ -24,6 +24,11 @@ public partial class Settings : ObservableObject
     [ObservableProperty]
     private string dataPath = "";
     [ObservableProperty]
+    private string exportPath = "";
+    [ObservableProperty]
+    private string concurrentExports = (Environment.ProcessorCount/2).ToString();
+
+    [ObservableProperty]
     private Theme theme = Theme.System;
 
     protected override void OnPropertyChanged(PropertyChangedEventArgs e)
@@ -33,6 +38,12 @@ public partial class Settings : ObservableObject
         {
             case nameof(DataPath):
                 Console.WriteLine(DataPath);
+                break;
+            case nameof(ExportPath):
+                Console.WriteLine(ExportPath);
+                break;
+            case nameof(ConcurrentExports):
+                Console.WriteLine(ConcurrentExports);
                 break;
             default:
                 Console.WriteLine("unknown variable");
@@ -66,7 +77,12 @@ public partial class Settings : ObservableObject
     private void SaveToIni()
     {
         var data = new IniData();
+
         data["paths"]["data"] = DataPath;
+        data["paths"]["export"] = ExportPath;
+
+        data["export"]["concurrentOperations"] = ConcurrentExports;
+
         data["ui"]["theme"] = Theme.ToString();
 
         try
@@ -88,6 +104,9 @@ public partial class Settings : ObservableObject
         var iniData = parser.ReadFile(iniPath);
 
         DataPath = iniData["paths"]["data"];
+        ExportPath = iniData["paths"]["export"];
+        ConcurrentExports = iniData["export"]["concurrentOperations"];
+
         if (Enum.TryParse(iniData["ui"]["theme"], out Theme loadedTheme))
             Theme = loadedTheme;
     }

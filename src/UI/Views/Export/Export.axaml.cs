@@ -1,16 +1,23 @@
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Data;
 using Avalonia.Interactivity;
+using Avalonia.Media;
+using Avalonia.Media.Imaging;
+using Avalonia.Platform;
 using Avalonia.Threading;
 using CommunityToolkit.Mvvm.ComponentModel;
 using MercuryConverter.Data;
 using MercuryConverter.ExportOperation;
 using MercuryConverter.Utility;
+using SaturnData.Notation.Serialization;
 
 namespace MercuryConverter.UI.Views;
 
@@ -21,9 +28,22 @@ public enum ExportStatus
 
 public partial class ExportRow : ObservableObject
 {
+    private static Dictionary<ExportStatus, IImage?> StatusImgs = new()
+    {
+        { ExportStatus.NotStarted, null },
+        { ExportStatus.Working, new Bitmap(Utils.AssetPath("imgs/status/indeterminate_spinner.png")) },
+        { ExportStatus.Error, new Bitmap(Utils.AssetPath("imgs/status/task_error.png")) },
+        { ExportStatus.Finished, new Bitmap(Utils.AssetPath("imgs/status/task_complete.png")) },
+        { ExportStatus.FinishedWithMessages, new Bitmap(Utils.AssetPath("imgs/status/task_alert.png")) },
+    };
+
+    [ObservableProperty]
+    private IImage? statusImg = null;
     public required Song Song { get; set; }
-    public ExportStatus Status { get; set; } = ExportStatus.NotStarted;
-    public string? Message { get; set; }
+    public void SetStatus(ExportStatus status)
+    {
+        StatusImg = StatusImgs[status];
+    }
 }
 
 public partial class Export : Panel
@@ -39,7 +59,10 @@ public partial class Export : Panel
         RadioExportAll.IsCheckedChanged += OnExportSelectionChg;
         ListingTable.PointerPressed += OnClick;
 
-        NumThreads.Text = (Environment.ProcessorCount / 2).ToString();
+        NumThreads.Bind(TextBox.TextProperty, new Binding(nameof(Settings.ConcurrentExports))
+        {
+            Source = Settings.I!
+        });
 
         ToolTip.SetTip(TickGroupExports,
             "Group exported songs into subfolders named after the version they released in. For example:\n" +
@@ -70,7 +93,6 @@ public partial class Export : Panel
 
     public void OnExportClick()
     {
-        Console.WriteLine("export clicked!");
         Task.Run(ExportFlow);
     }
 
@@ -98,7 +120,6 @@ public partial class Export : Panel
     {
         ListSelectAudioConvertFormat.IsEnabled = (bool)RadioShouldAudioConvert.IsChecked!;
 
-        Console.WriteLine($"input threads: {NumThreads.Text}");
         BtnExport.IsEnabled =
         (   // ensure we have selections
             Selection.Selections.Count > 0
@@ -108,7 +129,8 @@ public partial class Export : Panel
             !(bool)RadioShouldAudioConvert.IsChecked || ListSelectAudioConvertFormat.SelectedIndex != -1
         ) &&
         (
-            int.TryParse(NumThreads.Text, out var thr) && thr <= Environment.ProcessorCount
+            // enabled export worker count is in good range
+            int.TryParse(NumThreads.Text, out var thr) && 1 <= thr && thr <= Environment.ProcessorCount
         );
     }
 
@@ -128,15 +150,34 @@ public partial class Export : Panel
         UIExportingMode(true);
 
         string path = await Utils.BeginDirSelection("Choose your export path...");
-        Console.WriteLine($"Exporting to {path}");
 
-        int i = 0;
-        var mtx = new Mutex();
-
-        foreach (var r in Rows)
+        var options = await Dispatcher.UIThread.InvokeAsync(() =>
         {
-            Exporter.Run(path, r.Song);
-        }
+            AudioFormat audFor;
+            if (!(bool)RadioShouldAudioConvert.IsChecked!)
+                audFor = AudioFormat.WAV;
+            else
+                audFor = (AudioFormat)ListSelectAudioConvertFormat.SelectedIndex + 1;
+
+            return new ExportOptions
+            {
+                ChartFormat = (FormatVersion)ListSelectChartFormat.SelectedIndex,
+                AudioFormat = audFor,
+                ExcludeVideo = (bool)TickExcludeVideos.IsChecked!,
+                SourceSubdir = (bool)TickGroupExports.IsChecked!
+            };
+        });
+
+        // process each song in parallel (for audio conversion)
+        Parallel.ForEach(
+            Rows,
+            new ParallelOptions { MaxDegreeOfParallelism = Convert.ToInt32(Settings.I!.ConcurrentExports) },
+            async row =>
+            {
+                await Dispatcher.UIThread.InvokeAsync(() => row.SetStatus(ExportStatus.Working));
+                Exporter.Run(path, row.Song, options);
+            }
+        );
 
         UIExportingMode(false);
     }
