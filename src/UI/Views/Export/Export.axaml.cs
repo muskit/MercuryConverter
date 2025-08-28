@@ -132,6 +132,14 @@ public partial class Export : Panel
             // enabled export worker count is in good range
             int.TryParse(NumThreads.Text, out var thr) && 1 <= thr && thr <= Environment.ProcessorCount
         );
+
+        var ffmpegAvail = Utils.IsFFMpegAvailable();
+        Console.WriteLine($"FFMpeg available: {ffmpegAvail}");
+        if (!ffmpegAvail)
+            RadioLeaveAudioWAV.IsChecked = true;
+        RadioLeaveAudioWAV.IsEnabled = ffmpegAvail;
+        RadioShouldAudioConvert.IsEnabled = ffmpegAvail;
+        NoFFMpegMessage.IsVisible = !ffmpegAvail;
     }
 
     private void UIExportingMode(bool isExporting)
@@ -149,7 +157,13 @@ public partial class Export : Panel
     {
         UIExportingMode(true);
 
-        string path = await Utils.BeginDirSelection("Choose your export path...");
+        var path = await Utils.BeginDirSelection("Choose your export path...", Settings.I!.ExportPath);
+        if (string.IsNullOrEmpty(path))
+        {
+            UIExportingMode(false);
+            return;
+        }
+        Settings.I!.ExportPath = path;
 
         var options = await Dispatcher.UIThread.InvokeAsync(() =>
         {
@@ -176,6 +190,7 @@ public partial class Export : Panel
             {
                 await Dispatcher.UIThread.InvokeAsync(() => row.SetStatus(ExportStatus.Working));
                 Exporter.Run(path, row.Song, options);
+                await Dispatcher.UIThread.InvokeAsync(() => row.SetStatus(ExportStatus.Finished));
             }
         );
 

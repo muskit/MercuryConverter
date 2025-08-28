@@ -1,31 +1,64 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Data.Common;
 using System.IO;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Text.Json;
 using Avalonia.Threading;
-using MercuryConverter.UI.Views;
+using FFMpegCore.Arguments;
+using MercuryConverter.Utility;
 using SaturnData.Notation.Core;
-using SaturnData.Notation.Serialization;
-using SaturnData.Notation.Serialization.Mer;
+using Tmds.DBus.Protocol;
 using UAssetAPI;
 using UAssetAPI.ExportTypes;
 using UAssetAPI.PropertyTypes.Objects;
-using UAssetAPI.PropertyTypes.Structs;
 using UAssetAPI.UnrealTypes;
 
 namespace MercuryConverter.Data;
 
 public static class Database
 {
-    public static ObservableCollection<Song> Songs = new();
+    public static Dictionary<string, string> AudioPaths { get; } = new();
+    public static ObservableCollection<Song> Songs { get; } = new();
 
     public static void SetupNew(string dataPath)
     {
-        Dispatcher.UIThread.Invoke(() => Songs.Clear());
+        SetupAudio();
+        SetupSongs(dataPath);
+    }
+
+    private static void SetupAudio()
+    {
+        AudioPaths.Clear();
+
+        using (var reader = new StreamReader(Utils.AssetPath("awb.csv")))
+        {
+            string? line;
+            while ((line = reader.ReadLine()) != null)
+            {
+                // skip header
+                if (line.Contains("songID")) continue;
+
+                var tokens = line.Split(",");
+                var id = tokens[0];
+                var path = tokens[1];
+
+                if (path.Length <= 0)
+                {
+                    // TODO: warn of missing audio
+                    continue;
+                }
+
+                var key = Utils.IIDToMusicFilePath(Convert.ToUInt32(id));
+
+                var audFilePath = path.Split("_");
+                var audPath = Path.Combine(Settings.I!.DataPath, "MER_BGM", audFilePath[0], $"{audFilePath[1]}.wav");
+                AudioPaths[key] = audPath;
+            }
+        }
+    }
+
+    private static void SetupSongs(string dataPath)
+    {
+        Dispatcher.UIThread.Invoke(Songs.Clear);
 
         var metadataTablePath = Path.Combine(dataPath, "MusicParameterTable.uasset");
         var metadataAsset = new UAsset(metadataTablePath, EngineVersion.VER_UE4_19);
@@ -50,6 +83,7 @@ public static class Database
                 var song = new Song
                 {
                     Id = data["AssetDirectory"].ToString()!,
+                    Uid = ((UInt32PropertyData)data["UniqueID"]).Value,
                     Rubi = data["Rubi"].ToString()!,
                     Name = data["MusicMessage"].ToString()!,
                     Artist = data["ArtistMessage"].ToString()!,

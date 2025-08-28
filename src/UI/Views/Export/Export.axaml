@@ -30,13 +30,14 @@
 
                 <TextBlock Text="Audio Format" FontWeight="Medium" Margin="0 0 0 4"/>
                 <StackPanel Margin="10 0 0 42">
-                    <RadioButton GroupName="AudioFormat" IsChecked="true" Content="Leave as WAV"/>
+                    <RadioButton Name="RadioLeaveAudioWAV" GroupName="AudioFormat" IsChecked="true" Content="Leave as WAV"/>
                     <RadioButton Name="RadioShouldAudioConvert" GroupName="AudioFormat">
                         <ComboBox Name="ListSelectAudioConvertFormat" IsEnabled="false" PlaceholderText="Convert to...">
                             <ComboBoxItem Content="mp3"/>
                             <ComboBoxItem Content="ogg"/>
                         </ComboBox>
                     </RadioButton>
+                    <TextBlock Name="NoFFMpegMessage" Text="Could not find FFmpeg. Make sure it is installed and on PATH!" TextWrapping="Wrap" Foreground="Red" FontWeight="DemiBold" Opacity="0.8" FontSize="12"/>
                 </StackPanel>
 
                 <CheckBox Name="TickExcludeVideos" Content="Exclude videos"/>

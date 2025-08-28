@@ -17,6 +17,7 @@ namespace MercuryConverter.Data;
 public class Song
 {
     public required string Id { get; set; } // Snn-nnn
+    public required uint Uid { get; set; } // nnnn
     public required string Name { get; set; }
     public required string Artist { get; set; }
     public required uint Source { get; set; }
@@ -53,7 +54,7 @@ public class Song
     ========= Entry.Guid format =========
     MERCURY_[SONGID]_[DIFF] (each var is int)
     */
-    public IEnumerable<(Entry, Chart)> GetEntryCharts(string dataPath)
+    public IEnumerable<(Entry, Chart)> GetEntryCharts()
     {
         List<(Entry, Chart)> ret = new();
 
@@ -64,7 +65,7 @@ public class Song
 
             var diff = (Difficulty)i;
 
-            var chartFilePath = Path.Combine(dataPath, "MusicData", Id, $"{Id}_{Consts.DIFF_FILENAME_APPEND[diff]}.mer");
+            var chartFilePath = Path.Combine(Settings.I!.DataPath, "MusicData", Id, $"{Id}_{Consts.DIFF_FILENAME_APPEND[diff]}.mer");
             var clearThreshold = ((FloatPropertyData)assetData[Consts.DIFF_CLEAR_KEY[diff]]).Value;
 
             var e = NotationSerializer.ToEntry(chartFilePath, new NotationReadArgs
@@ -81,12 +82,11 @@ public class Song
             e.Difficulty = diff;
             e.Level = l.Value.Item1;
             e.NotesDesigner = l.Value.Item2;
-            e.JacketPath = Path.GetFileName(Jacket)!;
+            e.JacketPath = "jacket.png";
 
             // TODO: video
 
-            var uid = ((UInt32PropertyData)assetData["UniqueID"]).Value;
-            e.Guid = $"MERCURY_{uid}_0{(int)diff}";
+            e.Guid = $"MERCURY_{Uid}_0{(int)diff}";
 
             if (new List<uint> { 1, 2 }.Contains(Source))
             {
