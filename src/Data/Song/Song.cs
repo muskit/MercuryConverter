@@ -76,8 +76,8 @@ public class Song
             e.Reading = Rubi;
             e.Artist = Artist;
             e.BpmMessage = BpmMessage;
-            e.PreviewBegin = PreviewTime;
-            e.PreviewLength = PreviewLen;
+            e.PreviewBegin = PreviewTime*1000f;
+            e.PreviewLength = PreviewLen*1000f;
             e.ClearThreshold = clearThreshold;
             e.Difficulty = diff;
             e.Level = l.Value.Item1;

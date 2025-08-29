@@ -30,7 +30,6 @@ public partial class ExportRow : ObservableObject
 {
     private static Dictionary<ExportStatus, IImage?> StatusImgs = new()
     {
-        { ExportStatus.NotStarted, null },
         { ExportStatus.Working, new Bitmap(Utils.AssetPath("imgs/status/indeterminate_spinner.png")) },
         { ExportStatus.Error, new Bitmap(Utils.AssetPath("imgs/status/task_error.png")) },
         { ExportStatus.Finished, new Bitmap(Utils.AssetPath("imgs/status/task_complete.png")) },
@@ -40,15 +39,30 @@ public partial class ExportRow : ObservableObject
     [ObservableProperty]
     private IImage? statusImg = null;
     public required Song Song { get; set; }
-    public void SetStatus(ExportStatus status)
-    {
-        StatusImg = StatusImgs[status];
-    }
+    public ExportStatus Status { set => StatusImg = StatusImgs.GetValueOrDefault(value, null); }
 }
 
 public partial class Export : Panel
 {
     public ObservableCollection<ExportRow> Rows { get; } = new();
+
+    private bool _exporting = false;
+    private bool Exporting
+    {
+        get => _exporting;
+        set
+        {
+            _exporting = value;
+            Dispatcher.UIThread.Invoke(() =>
+            {
+                BtnExport.IsEnabled = !value;
+                ExportOptionsPane.IsEnabled = !value;
+                MainWindow.Instance!.TabSelection.IsEnabled = !value;
+                ExportSelectionPane.IsEnabled = !value;
+            });
+        }
+    }
+
 
     public Export()
     {
@@ -98,6 +112,8 @@ public partial class Export : Panel
 
     private void UpdateRows()
     {
+        if (Exporting) return;
+
         Console.WriteLine("Updating rows!");
         Rows.Clear();
 
@@ -118,6 +134,8 @@ public partial class Export : Panel
     /// </summary>
     private void UpdateUIConditions()
     {
+        if (Exporting) return;
+
         ListSelectAudioConvertFormat.IsEnabled = (bool)RadioShouldAudioConvert.IsChecked!;
 
         BtnExport.IsEnabled =
@@ -134,7 +152,6 @@ public partial class Export : Panel
         );
 
         var ffmpegAvail = Utils.IsFFMpegAvailable();
-        Console.WriteLine($"FFMpeg available: {ffmpegAvail}");
         if (!ffmpegAvail)
             RadioLeaveAudioWAV.IsChecked = true;
         RadioLeaveAudioWAV.IsEnabled = ffmpegAvail;
@@ -142,25 +159,13 @@ public partial class Export : Panel
         NoFFMpegMessage.IsVisible = !ffmpegAvail;
     }
 
-    private void UIExportingMode(bool isExporting)
-    {
-        Dispatcher.UIThread.Invoke(() =>
-        {
-            BtnExport.IsEnabled = !isExporting;
-            ExportOptionsPane.IsEnabled = !isExporting;
-            MainWindow.Instance!.TabSelection.IsEnabled = !isExporting;
-            ExportSelectionPane.IsEnabled = !isExporting;
-        });
-    }
-
     private async void ExportFlow()
     {
-        UIExportingMode(true);
-
+        Exporting = true;
         var path = await Utils.BeginDirSelection("Choose your export path...", Settings.I!.ExportPath);
         if (string.IsNullOrEmpty(path))
         {
-            UIExportingMode(false);
+            Exporting = false;
             return;
         }
         Settings.I!.ExportPath = path;
@@ -182,18 +187,24 @@ public partial class Export : Panel
             };
         });
 
+        // Reset statuses
+        Dispatcher.UIThread.Invoke(() => Rows.ToList().ForEach(row => row.Status = ExportStatus.NotStarted));
+
         // process each song in parallel (for audio conversion)
-        Parallel.ForEach(
+        // TODO: cancellable?
+        await Parallel.ForEachAsync(
             Rows,
             new ParallelOptions { MaxDegreeOfParallelism = Convert.ToInt32(Settings.I!.ConcurrentExports) },
-            async row =>
+            async (row, cancelToken) =>
             {
-                await Dispatcher.UIThread.InvokeAsync(() => row.SetStatus(ExportStatus.Working));
+                if (cancelToken.IsCancellationRequested) return;
+
+                await Dispatcher.UIThread.InvokeAsync(() => row.Status = ExportStatus.Working);
                 Exporter.Run(path, row.Song, options);
-                await Dispatcher.UIThread.InvokeAsync(() => row.SetStatus(ExportStatus.Finished));
+                await Dispatcher.UIThread.InvokeAsync(() => row.Status = ExportStatus.Finished);
             }
         );
 
-        UIExportingMode(false);
+        Exporting = false;
     }
 }

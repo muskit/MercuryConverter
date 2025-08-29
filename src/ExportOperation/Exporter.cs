@@ -88,7 +88,7 @@ public class Exporter
 
         /// JACKET ///
         if (song.Jacket != null)
-            File.Copy(song.Jacket, Path.Combine(exportSongPath, "jacket.png"));
+            File.Copy(song.Jacket, Path.Combine(exportSongPath, "jacket.png"), true);
 
         return new ExportResult { status = ExportResult.Status.Failed, message = "Unimplemented" };
     }
