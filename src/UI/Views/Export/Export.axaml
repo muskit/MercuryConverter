@@ -40,7 +40,7 @@
                     <TextBlock Name="NoFFMpegMessage" Text="Could not find FFmpeg. Make sure it is installed and on PATH!" TextWrapping="Wrap" Foreground="Red" FontWeight="DemiBold" Opacity="0.8" FontSize="12"/>
                 </StackPanel>
 
-                <CheckBox Name="TickExcludeVideos" Content="Exclude videos"/>
+                <CheckBox Name="TickExcludeVideos" Content="Exclude videos" IsChecked="True" IsEnabled="False"/>
                 <CheckBox Name="TickGroupExports" Content="Group song folders by release version"/>
                 <!-- <CheckBox Content="Delete original files"/> -->
 
@@ -70,6 +70,8 @@
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
                                 <Image Source="{Binding StatusImg}" Height="24"/>
+                                <!-- TODO -->
+                                <!-- <UserControl Content="{Binding StatusContent}" Height="24"/> -->
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>

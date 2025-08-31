@@ -199,7 +199,11 @@ public partial class Export : Panel
             {
                 if (cancelToken.IsCancellationRequested) return;
 
-                await Dispatcher.UIThread.InvokeAsync(() => row.Status = ExportStatus.Working);
+                await Dispatcher.UIThread.InvokeAsync(() =>
+                {
+                    row.Status = ExportStatus.Working;
+                    ListingTable.ScrollIntoView(row, null);
+                });
                 Exporter.Run(path, row.Song, options);
                 await Dispatcher.UIThread.InvokeAsync(() => row.Status = ExportStatus.Finished);
             }
