@@ -14,41 +14,38 @@ public enum Theme
 
 public partial class Settings : ObservableObject
 {
-    public static Settings? I;
+    public readonly static Settings I = new();
 
     private string iniPath;
 
     public string AppDataPath =>
         Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "muskit", "MercuryConverter");
 
-    [ObservableProperty]
-    private string dataPath = "";
-    [ObservableProperty]
-    private string exportPath = "";
-    [ObservableProperty]
-    private string concurrentExports = (Environment.ProcessorCount/2).ToString();
+    [ObservableProperty] private string dataPath = "";
+    [ObservableProperty] private string exportPath = "";
 
-    [ObservableProperty]
-    private Theme theme = Theme.System;
+    [ObservableProperty] private string concurrentExports = (Environment.ProcessorCount/2).ToString();
+
+    [ObservableProperty] private Theme theme = Theme.System;
 
     protected override void OnPropertyChanged(PropertyChangedEventArgs e)
     {
-        Console.Write($"Setting {e.PropertyName} changed to ");
-        switch (e.PropertyName)
-        {
-            case nameof(DataPath):
-                Console.WriteLine(DataPath);
-                break;
-            case nameof(ExportPath):
-                Console.WriteLine(ExportPath);
-                break;
-            case nameof(ConcurrentExports):
-                Console.WriteLine(ConcurrentExports);
-                break;
-            default:
-                Console.WriteLine("unknown variable");
-                break;
-        }
+        // Console.Write($"Setting {e.PropertyName} changed to ");
+        // switch (e.PropertyName)
+        // {
+        //     case nameof(DataPath):
+        //         Console.WriteLine(DataPath);
+        //         break;
+        //     case nameof(ExportPath):
+        //         Console.WriteLine(ExportPath);
+        //         break;
+        //     case nameof(ConcurrentExports):
+        //         Console.WriteLine(ConcurrentExports);
+        //         break;
+        //     default:
+        //         Console.WriteLine("unknown variable");
+        //         break;
+        // }
         SaveToIni();
 
         base.OnPropertyChanged(e);
@@ -56,8 +53,6 @@ public partial class Settings : ObservableObject
 
     public Settings()
     {
-        I = this;
-
         Console.WriteLine($"Settings path: {AppDataPath}");
         iniPath = Path.Combine(AppDataPath, "settings.ini");
 
@@ -69,7 +64,7 @@ public partial class Settings : ObservableObject
         catch (Exception e)
         {
             Console.WriteLine($"Couldn't read {iniPath}!\n{e.Message}");
-            Console.WriteLine("Attempting to create new settings file.");
+            Console.WriteLine("Creating new settings file.");
             SaveToIni();
         }
     }

@@ -1,7 +1,6 @@
 ﻿namespace MercuryConverter;
 
 using System;
-
 using Avalonia;
 using Avalonia.Logging;
 
@@ -15,8 +14,6 @@ class Program
     [STAThread]
     public static void Main(string[] args)
     {
-        new Settings();
-
         try
         {
             BuildAvaloniaApp()
