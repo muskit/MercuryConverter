@@ -116,12 +116,10 @@ public partial class Export : Panel
 
         if ((bool)RadioExportAll.IsChecked!)
         {
-            Console.WriteLine("Adding DB songs to rows...");
             Database.Songs.ToList().ForEach((s) => Rows.Add(new ExportRow { Song = s }));
         }
         else
         {
-            Console.WriteLine("Adding selections to rows...");
             Selection.Selections.ToList().ForEach((s) => Rows.Add(new ExportRow { Song = s }));
         }
     }

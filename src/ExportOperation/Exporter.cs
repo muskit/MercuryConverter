@@ -52,7 +52,6 @@ public class Exporter
             var audioKey = ec.Item1.AudioPath;
             var audioExportFileName = $"{audioKey}.{options.AudioFormat.ToString().ToLower()}";
             var audioExportPath = Path.Combine(exportSongPath, audioExportFileName);
-            Console.WriteLine(audioExportFileName);
             if (!finishedAudio.Contains(audioKey) && Database.AudioPaths.ContainsKey(audioKey))
             {
                 var audioSourcePath = Database.AudioPaths[audioKey];
