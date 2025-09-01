@@ -1,9 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.IO;
 using System.Linq;
-using System.Threading;
 using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Controls;
@@ -11,7 +9,6 @@ using Avalonia.Data;
 using Avalonia.Interactivity;
 using Avalonia.Media;
 using Avalonia.Media.Imaging;
-using Avalonia.Platform;
 using Avalonia.Threading;
 using CommunityToolkit.Mvvm.ComponentModel;
 using MercuryConverter.Data;
@@ -151,7 +148,7 @@ public partial class Export : Panel
             int.TryParse(NumThreads.Text, out var thr) && 1 <= thr && thr <= Environment.ProcessorCount
         );
 
-        var ffmpegAvail = Utils.IsFFMpegAvailable();
+        var ffmpegAvail = Utils.FFMpegAvailable;
         if (!ffmpegAvail)
             RadioLeaveAudioWAV.IsChecked = true;
         RadioLeaveAudioWAV.IsEnabled = ffmpegAvail;

@@ -1,11 +1,8 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.Contracts;
 using System.IO;
-using Avalonia.Data.Converters;
+using FFMpegCore;
 using MercuryConverter.Data;
-using MercuryConverter.UI.Views;
-using MercuryConverter.Utility;
 using SaturnData.Notation.Serialization;
 
 namespace MercuryConverter.ExportOperation;
@@ -54,6 +51,8 @@ public class Exporter
             /// AUDIO ///
             var audioKey = ec.Item1.AudioPath;
             var audioExportFileName = $"{audioKey}.{options.AudioFormat.ToString().ToLower()}";
+            var audioExportPath = Path.Combine(exportSongPath, audioExportFileName);
+            Console.WriteLine(audioExportFileName);
             if (!finishedAudio.Contains(audioKey) && Database.AudioPaths.ContainsKey(audioKey))
             {
                 var audioSourcePath = Database.AudioPaths[audioKey];
@@ -61,12 +60,14 @@ public class Exporter
                 // Copy/convert audio -- TODO
                 switch (options.AudioFormat)
                 {
-                    case AudioFormat.MP3:
-                        break;
-                    case AudioFormat.OGG:
+                    case AudioFormat.WAV:
+                        File.Copy(audioSourcePath, audioExportPath, true);
                         break;
                     default:
-                        File.Copy(audioSourcePath, Path.Combine(exportSongPath, audioExportFileName), true);
+                        FFMpegArguments
+                            .FromFileInput(audioSourcePath)
+                            .OutputToFile(audioExportPath)
+                            .ProcessSynchronously();
                         break;
                 }
                 finishedAudio.Add(audioKey);
