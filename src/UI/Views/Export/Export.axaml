@@ -40,7 +40,7 @@
                     <TextBlock Name="NoFFMpegMessage" Text="Could not find FFmpeg. Make sure it is installed and on PATH!" TextWrapping="Wrap" Foreground="Red" FontWeight="DemiBold" Opacity="0.8" FontSize="12"/>
                 </StackPanel>
 
-                <CheckBox Name="TickExcludeVideos" Content="Exclude videos" IsChecked="True" IsEnabled="False"/>
+                <CheckBox Name="TickExcludeVideos" Content="Exclude videos"/>
                 <CheckBox Name="TickGroupExports" Content="Group song folders by release version"/>
                 <!-- <CheckBox Content="Delete original files"/> -->
 

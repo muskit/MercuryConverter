@@ -2,8 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.IO;
+using Avalonia.Data.Converters;
 using MercuryConverter.Data;
 using MercuryConverter.UI.Views;
+using MercuryConverter.Utility;
 using SaturnData.Notation.Serialization;
 
 namespace MercuryConverter.ExportOperation;
@@ -43,14 +45,16 @@ public class Exporter
         Console.WriteLine($"Exporting {song.Id} to {exportSongPath}");
 
         var entryCharts = song.GetEntryCharts();
-        HashSet<string> processedAudio = new();
+        HashSet<string> finishedAudio = new();
+        HashSet<string> finishedMovies = new();
+        string prevMovie = "-";
 
         foreach (var ec in entryCharts)
         {
             /// AUDIO ///
             var audioKey = ec.Item1.AudioPath;
             var audioExportFileName = $"{audioKey}.{options.AudioFormat.ToString().ToLower()}";
-            if (!processedAudio.Contains(audioKey) && Database.AudioPaths.ContainsKey(audioKey))
+            if (!finishedAudio.Contains(audioKey) && Database.AudioPaths.ContainsKey(audioKey))
             {
                 var audioSourcePath = Database.AudioPaths[audioKey];
 
@@ -65,10 +69,40 @@ public class Exporter
                         File.Copy(audioSourcePath, Path.Combine(exportSongPath, audioExportFileName), true);
                         break;
                 }
-                processedAudio.Add(audioKey);
+                finishedAudio.Add(audioKey);
             }
             ec.Item1.AudioPath = audioExportFileName;
 
+            /// VIDEO ///
+            // mv_... = set video
+            // null = use previously set video
+            // - = disable video
+            if (!options.ExcludeVideo)
+            {
+                var movieProp = song.assetData[Consts.DIFF_MOVIE_KEY[ec.Item1.Difficulty]];
+
+                string movie;
+                if (movieProp.RawValue == null)
+                    movie = prevMovie;
+                else
+                    movie = movieProp.ToString()!;
+
+                if (movie != "-")
+                {
+                    var vidFileName = $"{movie}.mp4";
+                    if (!finishedMovies.Contains(movie))
+                    {
+                        var vidPath = Path.Combine(Settings.I!.DataPath, "movies", vidFileName);
+                        // TODO: check file's existence to avoid program crash
+                        File.Copy(vidPath, Path.Combine(exportSongPath, vidFileName), true);
+
+                        finishedMovies.Add(movie);
+                    }
+                    ec.Item1.VideoPath = vidFileName;
+                }
+                prevMovie = movie;
+            }
+            
             /// CHART ///
             var chartExt = 
                 options.ChartFormat == FormatVersion.SatV1 ||
@@ -81,8 +115,7 @@ public class Exporter
                 ec.Item1, ec.Item2,
                 new NotationWriteArgs { FormatVersion = options.ChartFormat }
             );
-
-            // restore audio key in db AFTER exporting metadata / chart
+            // restore audio key in db AFTER exporting metadata
             ec.Item1.AudioPath = audioKey;
         }
 

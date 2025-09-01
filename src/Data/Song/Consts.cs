@@ -66,4 +66,12 @@ public static class Consts
         {Difficulty.Expert, "NotesDesignerExpert"},
         {Difficulty.Inferno, "NotesDesignerInferno"},
     };
+
+    public static readonly IReadOnlyDictionary<Difficulty, string> DIFF_MOVIE_KEY = new Dictionary<Difficulty, string>()
+    {
+        {Difficulty.Normal, "MovieAssetName"},
+        {Difficulty.Hard, "MovieAssetNameHard"},
+        {Difficulty.Expert, "MovieAssetNameExpert"},
+        {Difficulty.Inferno, "MovieAssetNameInferno"},
+    };
 }
