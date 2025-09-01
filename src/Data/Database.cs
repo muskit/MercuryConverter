@@ -2,11 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
+using System.Linq;
 using Avalonia.Threading;
-using FFMpegCore.Arguments;
 using MercuryConverter.Utility;
 using SaturnData.Notation.Core;
-using Tmds.DBus.Protocol;
 using UAssetAPI;
 using UAssetAPI.ExportTypes;
 using UAssetAPI.PropertyTypes.Objects;
@@ -118,13 +117,32 @@ public static class Database
                     song.Levels[(int)diff] = (lvl, data[Consts.DIFF_DESIGNER_KEY[diff]].ToString()!);
                 }
 
-                Dispatcher.UIThread.Post(() => Songs.Add(song));
+                Dispatcher.UIThread.Invoke(() => Songs.Add(song));
             }
             catch (Exception e)
             {
                 Console.WriteLine($"Couldn't construct a song!\n{e}");
             }
         }
-        Console.WriteLine("Data setup finished.");
+        Console.WriteLine($"Data setup finished with {Songs.Count} songs.");
+
+        // SEARCH TEST
+        var camellia = Search("camellia").ToList();
+        camellia.ForEach(Console.WriteLine);
+    }
+
+    public static IEnumerable<Song> Search(string substr)
+    {
+        var sanitized = substr.ToLower().Trim();
+
+        if (sanitized == "")
+            return Songs;
+
+        return Songs.Where(s =>
+            {
+                return
+                    s.Artist.ToLower().Contains(sanitized) ||
+                    s.Name.ToLower().Contains(sanitized);
+            });
     }
 }

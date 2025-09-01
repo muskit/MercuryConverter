@@ -73,8 +73,8 @@ public class Song
             e.Reading = Rubi;
             e.Artist = Artist;
             e.BpmMessage = BpmMessage;
-            e.PreviewBegin = PreviewTime*1000f;
-            e.PreviewLength = PreviewLen*1000f;
+            e.PreviewBegin = PreviewTime * 1000f;
+            e.PreviewLength = PreviewLen * 1000f;
             e.ClearThreshold = clearThreshold;
             e.Difficulty = diff;
             e.Level = l.Value.Item1;
@@ -103,5 +103,10 @@ public class Song
         }
 
         return ret;
+    }
+
+    public override string ToString()
+    {
+        return $"[{Id}] {Artist} - {Name}";
     }
 }

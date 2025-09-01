@@ -73,8 +73,8 @@ public partial class Selection : Panel
         if (ListingTable.SelectedItems.Count > 0)
         {
             Song song = e.AddedItems.Count > 0 ?
-                (Song) e.AddedItems[e.AddedItems.Count - 1]! :
-                (Song) ListingTable.SelectedItems[ListingTable.SelectedItems.Count - 1]!;
+                (Song)e.AddedItems[e.AddedItems.Count - 1]! :
+                (Song)ListingTable.SelectedItems[ListingTable.SelectedItems.Count - 1]!;
 
             Dispatcher.UIThread.Post(() =>
             {
@@ -103,5 +103,18 @@ public partial class Selection : Panel
                 }
             });
         }
+    }
+
+    private void OnSearchTextChange(object? _, TextChangedEventArgs args)
+    {
+        var src = (TextBox)args.Source!;
+        if (string.IsNullOrEmpty(src.Text))
+        {
+            Dispatcher.UIThread.Post(() => ListingTable.ItemsSource = Database.Songs);
+            return;
+        }
+
+        var searchResults = Database.Search(src.Text.ToLower());
+        Dispatcher.UIThread.Post(() => ListingTable.ItemsSource = searchResults);
     }
 }

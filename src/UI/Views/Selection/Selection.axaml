@@ -42,7 +42,7 @@
         <!-- Song Listing Table -->
         <DockPanel>
             <DockPanel Margin="0 4 0 8" DockPanel.Dock="Top">
-                <TextBox Watermark="Search for title, artist, designer..."/>
+                <TextBox Watermark="Search for song title or artist..." TextChanged="OnSearchTextChange"/>
             </DockPanel>
             <UserControl Background="{DynamicResource DataGridContentBackground}">
                 <DataGrid Name="ListingTable" IsReadOnly="True" SelectionMode="Extended" ItemsSource="{x:Static data:Database.Songs}"
