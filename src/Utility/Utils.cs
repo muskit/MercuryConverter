@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Reflection.Metadata.Ecma335;
 using System.Threading.Tasks;
 using Avalonia.Controls;
 using Avalonia.Platform;
@@ -10,6 +9,7 @@ using Avalonia.Platform.Storage;
 using Avalonia.Threading;
 using FFMpegCore;
 using FFMpegCore.Arguments;
+using Instances.Exceptions;
 using MercuryConverter.UI;
 
 namespace MercuryConverter.Utility;
@@ -56,13 +56,37 @@ public static class Utils
         return $"MER_BGM_S{id / 1000:D2}_{id % 1000:D3}";
     }
 
-    public static bool IsFFMpegAvailable()
+    private static bool? _ffmpegAvailable = null;
+    public static bool FFMpegAvailable
     {
-        // FFMpegArguments
-        //     .FromFileInput("dummy_input.mp4") // Use a dummy input, as it won't be processed
-        //     .OutputToFile("dummy_output.mp4", true, options => options.WithArgument(new CustomArgument("-version"))) // Request FFmpeg version
-        //     .ProcessSynchronously();
+        get
+        {
+            if (_ffmpegAvailable == null)
+            {
+                var testVidPath = Path.Combine(
+                    Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location)!,
+                    "ic.mp4"
+                );
 
-        return false;
+                try
+                {
+                    FFMpegArguments
+                        .FromFileInput(testVidPath)
+                        .OutputToFile("-", true, options => options.WithArgument(new ForceFormatArgument("null")))
+                        .ProcessSynchronously();
+
+                    _ffmpegAvailable = true;
+                }
+                catch (InstanceFileNotFoundException)
+                {
+                    Console.WriteLine($"Could not find FFmpeg on PATH!");
+                    _ffmpegAvailable = false;
+                }
+
+                Console.WriteLine($"FFmpeg available: {_ffmpegAvailable}");
+            }
+
+            return (bool)_ffmpegAvailable!;
+        }
     }
 }
