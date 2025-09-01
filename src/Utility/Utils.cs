@@ -89,4 +89,9 @@ public static class Utils
             return (bool)_ffmpegAvailable!;
         }
     }
+
+    public static string RemoveInvalidFileNameChars(string filename)
+    {
+        return string.Concat(filename.Split(['/', '\\', '\"', '\'']));
+    }
 }

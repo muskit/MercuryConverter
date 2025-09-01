@@ -56,7 +56,6 @@ public class Exporter
             {
                 var audioSourcePath = Database.AudioPaths[audioKey];
 
-                // Copy/convert audio -- TODO
                 switch (options.AudioFormat)
                 {
                     case AudioFormat.WAV:

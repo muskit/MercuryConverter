@@ -1,9 +1,6 @@
-using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using Avalonia.Controls;
-using Avalonia.Media;
+using MercuryConverter.Utility;
 using SaturnData.Notation.Core;
 using SaturnData.Notation.Serialization;
 using UAssetAPI.PropertyTypes.Objects;
@@ -29,7 +26,7 @@ public class Song
     public required float PreviewTime { get; set; }
     public required float PreviewLen { get; set; }
     public string SourceName => Consts.NUM_SOURCE[Source];
-    public string FolderName => $"{Artist} - {Name}";
+    public string FolderName => $"{Utils.RemoveInvalidFileNameChars(Artist)} - {Utils.RemoveInvalidFileNameChars(Name)}";
 
     /// <summary>
     /// Pairs of level and chart designer.
