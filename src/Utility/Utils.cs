@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using Avalonia.Controls;
 using Avalonia.Platform;
@@ -49,7 +50,7 @@ public static class Utils
     /// </summary>
     /// <param name="path">Forward-slash (/)-separated path to asset.</param>
     /// <returns></returns>
-    public static Stream AssetPath(string path) => AssetLoader.Open(new Uri("avares://MercuryConverter/Assets/" + path));
+    public static Stream GetAsset(string path) => AssetLoader.Open(new Uri(Path.Combine("avares://MercuryConverter/Assets/", path)));
 
     public static string IIDToMusicFilePath(uint id)
     {
@@ -82,10 +83,14 @@ public static class Utils
                     Console.WriteLine($"Could not find FFmpeg on PATH!");
                     _ffmpegAvailable = false;
                 }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Something's wrong with FFmpeg!\n{ex.Message}");
+                    _ffmpegAvailable = false;
+                }
 
                 Console.WriteLine($"FFmpeg available: {_ffmpegAvailable}");
             }
-
             return (bool)_ffmpegAvailable!;
         }
     }
@@ -93,5 +98,22 @@ public static class Utils
     public static string RemoveInvalidFileNameChars(string filename)
     {
         return string.Concat(filename.Split(['/', '\\', '\"', '\'']));
+    }
+
+    private static string? _version = null;
+    public static string VERSION
+    {
+        get
+        {
+            if (_version == null)
+            {
+                using (StreamReader reader = new(GetAsset("version")))
+                {
+                    _version = reader.ReadToEnd();
+                }
+                _version = _version.Trim();
+            }
+            return _version!;
+        }
     }
 }

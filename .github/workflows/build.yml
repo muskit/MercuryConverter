@@ -1,0 +1,35 @@
+name: Build and publish application
+
+on: workflow_run
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Get Application Version
+        run: |
+          echo "PKG_PREPEND=MercuryConverter-v$(cat src/Assets/version)" >> $GITHUB_ENV
+
+      - name: Setup dotnet 9.0.x
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 9.0.x
+
+      - name: Build for Linux
+        run: |
+          dotnet publish src --runtime linux-x64 -o "./builds/${{ env.PKG_PREPEND }}-linux-x64"
+          zip -r "${{ env.PKG_PREPEND }}-linux-x64.zip" "./builds/${{ env.PKG_PREPEND }}-linux-x64"
+      
+      - name: Build for Windows
+        run: |
+          dotnet publish src --runtime win-x64 -o "./builds/${{ env.PKG_PREPEND }}-windows-x64"
+          zip -r "${{ env.PKG_PREPEND }}-windows-x64.zip" "./builds/${{ env.PKG_PREPEND }}-windows-x64"
+
+      - name: Create Release
+        uses: ncipollo/release-action@v1.19.1
+        with:
+          allowUpdates: true
+          commit: main
+          artifacts: "${{ env.PKG_PREPEND }}-linux-x64.zip, ${{ env.PKG_PREPEND }}-windows-x64.zip"

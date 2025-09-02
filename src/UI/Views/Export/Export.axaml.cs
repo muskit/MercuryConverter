@@ -27,10 +27,10 @@ public partial class ExportRow : ObservableObject
 {
     private static Dictionary<ExportStatus, IImage?> StatusImgs = new()
     {
-        { ExportStatus.Working, new Bitmap(Utils.AssetPath("imgs/status/indeterminate_spinner.png")) },
-        { ExportStatus.Error, new Bitmap(Utils.AssetPath("imgs/status/task_error.png")) },
-        { ExportStatus.Finished, new Bitmap(Utils.AssetPath("imgs/status/task_complete.png")) },
-        { ExportStatus.FinishedWithMessages, new Bitmap(Utils.AssetPath("imgs/status/task_alert.png")) },
+        { ExportStatus.Working, new Bitmap(Utils.GetAsset("imgs/status/indeterminate_spinner.png")) },
+        { ExportStatus.Error, new Bitmap(Utils.GetAsset("imgs/status/task_error.png")) },
+        { ExportStatus.Finished, new Bitmap(Utils.GetAsset("imgs/status/task_complete.png")) },
+        { ExportStatus.FinishedWithMessages, new Bitmap(Utils.GetAsset("imgs/status/task_alert.png")) },
     };
 
     [ObservableProperty]
@@ -111,7 +111,6 @@ public partial class Export : Panel
     {
         if (Exporting) return;
 
-        Console.WriteLine("Updating rows!");
         Rows.Clear();
 
         if ((bool)RadioExportAll.IsChecked!)

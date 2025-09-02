@@ -39,7 +39,7 @@ public static class Database
     {
         AudioPaths.Clear();
 
-        using (var reader = new StreamReader(Utils.AssetPath("awb.csv")))
+        using (var reader = new StreamReader(Utils.GetAsset("awb.csv")))
         {
             string? line;
             while ((line = reader.ReadLine()) != null)
