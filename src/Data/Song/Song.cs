@@ -21,7 +21,7 @@ public class Song
     public required string Rubi { get; set; }
     public required string BpmMessage { get; set; }
     public string? Copyright { get; set; } // May have never been used?
-    public required int Genre { get; set; }
+    public required int Category { get; set; }
     public required string? Jacket { get; set; }
     public required float PreviewTime { get; set; }
     public required float PreviewLen { get; set; }

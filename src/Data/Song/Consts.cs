@@ -7,7 +7,7 @@ namespace MercuryConverter.Data;
 
 public static class Consts
 {
-    public static readonly IReadOnlyDictionary<int, string> CATEGORY_INDEX = new Dictionary<int, string>
+    public static readonly IReadOnlyDictionary<int, string> CATEGORY_NAME = new Dictionary<int, string>
     {
         { -1, "Unknown"},
         { 0, "Anime/Pop"},
@@ -19,6 +19,7 @@ public static class Consts
         { 6, "HARDCORE TANO*C" },
         { 7, "VTuber" },
     };
+    public static readonly IReadOnlyDictionary<string, int> CATEGORY_INDEX = CATEGORY_NAME.ToDictionary(p => p.Value, p => p.Key);
 
     public static readonly IReadOnlyDictionary<uint, string> NUM_SOURCE = new Dictionary<uint, string>
     {

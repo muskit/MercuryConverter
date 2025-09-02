@@ -13,6 +13,9 @@ public partial class Selection : Panel
 {
     public static ObservableRangeCollection<Song> Selections { get; } = new();
 
+    private List<CheckBox> sourceCBs = new();
+    private List<CheckBox> categoryCBs = new();
+
     public Selection()
     {
         InitializeComponent();
@@ -24,26 +27,21 @@ public partial class Selection : Panel
 
         foreach (var (k, v) in Consts.NUM_SOURCE)
         {
-            FilterSourceContainer.Children.Add(
-                new CheckBox
-                {
-                    Name = $"FilterSourceCheckbox{k}",
-                    Content = v,
-                }
-            );
+            var cb = new CheckBox { Content = v };
+            cb.IsCheckedChanged += OnFilterChange;
+            sourceCBs.Add(cb);
+            FilterSourceContainer.Children.Add(cb);
         }
-        foreach (var (k, v) in Consts.CATEGORY_INDEX)
+
+        foreach (var (k, v) in Consts.CATEGORY_NAME)
         {
             if (k == -1)
                 continue;
 
-            FilterCategoryContainer.Children.Add(
-                new CheckBox
-                {
-                    Name = $"FilterCategoryCheckbox{k}",
-                    Content = v,
-                }
-            );
+            var cb = new CheckBox { Content = v };
+            cb.IsCheckedChanged += OnFilterChange;
+            categoryCBs.Add(cb);
+            FilterCategoryContainer.Children.Add(cb);
         }
     }
 
@@ -57,7 +55,7 @@ public partial class Selection : Panel
         var cell = e.Cell;
         var tb = (TextBlock)cell.Content!;
 
-        Console.WriteLine($"{e.PointerPressedEventArgs.Properties.IsRightButtonPressed} - {e.Cell.Content}");
+        // Console.WriteLine($"{e.PointerPressedEventArgs.Properties.IsRightButtonPressed} - {e.Cell.Content}");
     }
 
     private void OnSelectionChange(object? sender, SelectionChangedEventArgs e)
@@ -107,14 +105,35 @@ public partial class Selection : Panel
 
     private void OnSearchTextChange(object? _, TextChangedEventArgs args)
     {
-        var src = (TextBox)args.Source!;
-        if (string.IsNullOrEmpty(src.Text))
+        UpdateListing();
+    }
+
+    private void OnFilterChange(object? _, EventArgs __)
+    {
+        UpdateListing();
+    }
+
+    private void UpdateListing()
+    {
+        var filterOptions = new FilterOptions();
+
+        foreach (var cb in sourceCBs)
         {
-            Dispatcher.UIThread.Post(() => ListingTable.ItemsSource = Database.Songs);
-            return;
+            if ((bool)cb.IsChecked!)
+            {
+                filterOptions.sources.Add(Consts.SOURCE_NUM[(string) cb.Content!]);
+            }
         }
 
-        var searchResults = Database.Search(src.Text.ToLower());
+        foreach (var cb in categoryCBs)
+        {
+            if ((bool)cb.IsChecked!)
+            {
+                filterOptions.categories.Add(Consts.CATEGORY_INDEX[(string) cb.Content!]);
+            }
+        }
+
+        var searchResults = Database.SearchAndFilter(SearchBox.Text!, filterOptions);
         Dispatcher.UIThread.Post(() => ListingTable.ItemsSource = searchResults);
     }
 }

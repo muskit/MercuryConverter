@@ -13,6 +13,17 @@ using UAssetAPI.UnrealTypes;
 
 namespace MercuryConverter.Data;
 
+public class FilterOptions
+{
+    public List<int> categories = [];
+    public List<uint> sources = [];
+
+    public override string ToString()
+    {
+        return $"categories({categories.Count()})=[{string.Join(',', categories.Select(i => i.ToString()))}];sources({sources.Count()})=[{string.Join(',', sources.Select(i => i.ToString()))}]";
+    }
+}
+
 public static class Database
 {
     public static Dictionary<string, string> AudioPaths { get; } = new();
@@ -86,7 +97,7 @@ public static class Database
                     Rubi = data["Rubi"].ToString()!,
                     Name = data["MusicMessage"].ToString()!,
                     Artist = data["ArtistMessage"].ToString()!,
-                    Genre = ((IntPropertyData)data["ScoreGenre"]).Value,
+                    Category = ((IntPropertyData)data["ScoreGenre"]).Value,
                     Source = ((UInt32PropertyData)data["VersionNo"]).Value,
                     BpmMessage = data["Bpm"].ToString()!,
                     PreviewTime = previewBegin,
@@ -125,24 +136,37 @@ public static class Database
             }
         }
         Console.WriteLine($"Data setup finished with {Songs.Count} songs.");
-
-        // SEARCH TEST
-        var camellia = Search("camellia").ToList();
-        camellia.ForEach(Console.WriteLine);
     }
 
-    public static IEnumerable<Song> Search(string substr)
+    public static IEnumerable<Song> SearchAndFilter(string substr, FilterOptions filter)
     {
-        var sanitized = substr.ToLower().Trim();
+        /// Filter
+        var filtered = new List<Song>();
 
+        // by source
+        var sourceSongs = new List<Song>();
+        if (filter.sources.Count() == 0)
+            sourceSongs.AddRange(Songs);
+        else
+            sourceSongs.AddRange(Songs.Where(s => filter.sources.Contains(s.Source)));
+
+        // by category
+        if (filter.categories.Count() == 0)
+            filtered.AddRange(sourceSongs);
+        else
+            filtered.AddRange(sourceSongs.Where(s => filter.categories.Contains(s.Category)));
+
+
+        /// Search
+        var sanitized = string.IsNullOrEmpty(substr) ? "" : substr.ToLower().Trim();
         if (sanitized == "")
-            return Songs;
+            return filtered;
 
-        return Songs.Where(s =>
-            {
-                return
-                    s.Artist.ToLower().Contains(sanitized) ||
-                    s.Name.ToLower().Contains(sanitized);
-            });
+        return filtered.Where(s =>
+        {
+            return
+                s.Artist.ToLower().Contains(sanitized) ||
+                s.Name.ToLower().Contains(sanitized);
+        });
     }
 }
