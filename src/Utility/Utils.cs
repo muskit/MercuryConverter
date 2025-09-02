@@ -65,7 +65,7 @@ public static class Utils
             if (_ffmpegAvailable == null)
             {
                 var testVidPath = Path.Combine(
-                    Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location)!,
+                    AppContext.BaseDirectory,
                     "ic.mp4"
                 );
 
