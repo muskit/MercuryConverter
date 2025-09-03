@@ -4,6 +4,6 @@
 
 This is a rewrite of [WacK-Repackager](https://github.com/muskit/WacK-Repackager) to work with the upcoming Saturn project.
 
-**Requires [.NET 9.0+](https://dotnet.microsoft.com/en-us/download) to be installed.**
+**If this program does not run, make sure [.NET 9.0+](https://dotnet.microsoft.com/en-us/download) is installed.**
 
 Head over to [HOWTO](HOWTO.md) for required data preparation.
